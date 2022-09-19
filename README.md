@@ -1,4 +1,4 @@
-# demo1
+# cms-vue
 
 ## Project setup
 
