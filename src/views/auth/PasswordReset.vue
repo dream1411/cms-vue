@@ -154,6 +154,7 @@ export default defineComponent({
               }
             }).then(function() {
               // Go to page after successfully login
+              localStorage.setItem("token","5555555555555555555")
               router.push({ name: "dashboard" });
             });
           })
