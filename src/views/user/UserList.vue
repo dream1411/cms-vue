@@ -357,7 +357,7 @@ export default defineComponent({
             "/getUserAll" +
             "?sizeContents=9999&page=0&role=",
           {
-            headers: { token: localStorage.getItem("token") },
+            headers: { token: localStorage.getItem("id_token") },
           }
         )
         .then((response) => {
