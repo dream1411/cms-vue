@@ -6,7 +6,7 @@
       class="form w-100"
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
-     
+      :validation-schema="login"
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">
@@ -220,7 +220,7 @@ export default defineComponent({
         });
       } else {
         Swal.fire({
-          text: error[0],
+          text: error,
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "Try again!",

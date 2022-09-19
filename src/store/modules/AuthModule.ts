@@ -89,9 +89,9 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
         console.log(data.data.profile);
         this.context.commit(Mutations.SET_AUTH, data.data.profile);
       })
-      .catch(({ response }) => {
-        console.log("catch");
-        this.context.commit(Mutations.SET_ERROR, response.data.errors);
+      .catch(({ error }) => {
+        console.log(error);
+        this.context.commit(Mutations.SET_ERROR, ["เข้าสู่ระบบไม่สำเร็จ"]);
       });
       /* eslint-disable */
   }
