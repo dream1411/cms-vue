@@ -6,7 +6,7 @@
       class="form w-100"
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
-      :validation-schema="login"
+     
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">
