@@ -175,9 +175,7 @@
         </span>
       </router-link>
 
-      <!--begin::Menu sub-->
       <div class="menu-sub menu-sub-dropdown w-175px py-4">
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('en')"
@@ -195,10 +193,24 @@
             English
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
+         <div class="menu-item px-3">
+          <a
+            @click="setLang('th')"
+            href="#"
+            class="menu-link d-flex px-5"
+            :class="{ active: currentLanguage('th') }"
+          >
+            <span class="symbol symbol-20px me-4">
+              <img
+                class="rounded-1"
+                src="media/flags/thailand.svg"
+                alt="metronic"
+              />
+            </span>
+            thailand
+          </a>
+        </div>
+        <!-- <div class="menu-item px-3">
           <a
             @click="setLang('es')"
             href="#"
@@ -215,9 +227,7 @@
             Spanish
           </a>
         </div>
-        <!--end::Menu item-->
 
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('de')"
@@ -235,9 +245,6 @@
             German
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('ja')"
@@ -255,9 +262,7 @@
             Japanese
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
+       
         <div class="menu-item px-3">
           <a
             @click="setLang('fr')"
@@ -274,8 +279,7 @@
             </span>
             French
           </a>
-        </div>
-        <!--end::Menu item-->
+        </div> -->
       </div>
       <!--end::Menu sub-->
     </div>
@@ -324,22 +328,26 @@ export default defineComponent({
         flag: "media/flags/united-states.svg",
         name: "English"
       },
-      es: {
-        flag: "media/flags/spain.svg",
-        name: "Spanish"
+       th: {
+        flag: "media/flags/thailand.svg",
+        name: "ไทย"
       },
-      de: {
-        flag: "media/flags/germany.svg",
-        name: "German"
-      },
-      ja: {
-        flag: "media/flags/japan.svg",
-        name: "Japanese"
-      },
-      fr: {
-        flag: "media/flags/france.svg",
-        name: "French"
-      }
+      // es: {
+      //   flag: "media/flags/spain.svg",
+      //   name: "Spanish"
+      // },
+      // de: {
+      //   flag: "media/flags/germany.svg",
+      //   name: "German"
+      // },
+      // ja: {
+      //   flag: "media/flags/japan.svg",
+      //   name: "Japanese"
+      // },
+      // fr: {
+      //   flag: "media/flags/france.svg",
+      //   name: "French"
+      // }
     };
 
     const signOut = () => {

@@ -9,20 +9,21 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" src="media/avatars/300-1.jpg" />
+          <img alt="Logo" :src="imageUrl + profile.imageProfile" />
         </div>
         <!--end::Avatar-->
 
         <!--begin::Username-->
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
-            Max Smith
-            <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
+            {{ profile.firstName }} {{ profile.lastName }}
+            <!-- <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
               >Pro</span
-            >
+            > -->
           </div>
           <a href="#" class="fw-semobold text-muted text-hover-primary fs-7"
-            >max@kt.com</a
+            >{{ profile.userName }} <br />
+            {{ profile.email }}</a
           >
         </div>
         <!--end::Username-->
@@ -36,14 +37,12 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
-        My Profile
+      <router-link :to="'/users/manage/' + profile.id" class="menu-link px-5">
+        โปรไฟล์
       </router-link>
     </div>
-    <!--end::Menu item-->
 
-    <!--begin::Menu item-->
-    <div class="menu-item px-5">
+    <!-- <div class="menu-item px-5">
       <router-link to="/pages/profile/overview" class="menu-link px-5">
         <span class="menu-text">My Projects</span>
         <span class="menu-badge">
@@ -52,20 +51,18 @@
           >
         </span>
       </router-link>
-    </div>
-    <!--end::Menu item-->
+    </div> -->
 
-    <!--begin::Menu item-->
     <div
       class="menu-item px-5"
       data-kt-menu-trigger="hover"
       data-kt-menu-placement="left-start"
       data-kt-menu-flip="center, top"
     >
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
+      <!-- <router-link to="/pages/profile/overview" class="menu-link px-5">
         <span class="menu-title">My Subscription</span>
         <span class="menu-arrow"></span>
-      </router-link>
+      </router-link> -->
 
       <!--begin::Menu sub-->
       <div class="menu-sub menu-sub-dropdown w-175px py-4">
@@ -140,11 +137,11 @@
     <!--end::Menu item-->
 
     <!--begin::Menu item-->
-    <div class="menu-item px-5">
+    <!-- <div class="menu-item px-5">
       <router-link to="/pages/profile/overview" class="menu-link px-5">
         My Statements
       </router-link>
-    </div>
+    </div> -->
     <!--end::Menu item-->
 
     <!--begin::Menu separator-->
@@ -158,7 +155,7 @@
       data-kt-menu-placement="left-start"
       data-kt-menu-flip="center, top"
     >
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
+      <!-- <router-link to="/pages/profile/overview" class="menu-link px-5">
         <span class="menu-title position-relative">
           Language
           <span
@@ -172,11 +169,9 @@
             />
           </span>
         </span>
-      </router-link>
+      </router-link> -->
 
-      <!--begin::Menu sub-->
       <div class="menu-sub menu-sub-dropdown w-175px py-4">
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('en')"
@@ -194,10 +189,24 @@
             English
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
+          <a
+            @click="setLang('th')"
+            href="#"
+            class="menu-link d-flex px-5"
+            :class="{ active: currentLanguage('th') }"
+          >
+            <span class="symbol symbol-20px me-4">
+              <img
+                class="rounded-1"
+                src="media/flags/thailand.svg"
+                alt="metronic"
+              />
+            </span>
+            thailand
+          </a>
+        </div>
+        <!-- <div class="menu-item px-3">
           <a
             @click="setLang('es')"
             href="#"
@@ -214,9 +223,6 @@
             Spanish
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('de')"
@@ -234,9 +240,6 @@
             German
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('ja')"
@@ -254,9 +257,6 @@
             Japanese
           </a>
         </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
             @click="setLang('fr')"
@@ -273,24 +273,21 @@
             </span>
             French
           </a>
-        </div>
-        <!--end::Menu item-->
+        </div> -->
       </div>
-      <!--end::Menu sub-->
     </div>
-    <!--end::Menu item-->
 
     <!--begin::Menu item-->
-    <div class="menu-item px-5 my-1">
+    <!-- <div class="menu-item px-5 my-1">
       <router-link to="/pages/profile/overview" class="menu-link px-5">
         Account Settings
       </router-link>
-    </div>
+    </div> -->
     <!--end::Menu item-->
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <a @click="signOut()" class="menu-link px-5"> Sign Out </a>
+      <a @click="signOut()" class="menu-link px-5"> ออกจากระบบ </a>
     </div>
     <!--end::Menu item-->
   </div>
@@ -303,10 +300,20 @@ import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { Actions } from "@/store/enums/StoreEnums";
+import { AnyObject } from "yup/lib/types";
 
 export default defineComponent({
   name: "kt-user-menu",
   components: {},
+  data() {
+    return {
+      profile: localStorage.getItem("dataInfo")
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ? JSON.parse(localStorage.getItem("dataInfo")!)
+        : null,
+      imageUrl: process.env.VUE_APP_API_URL_IMAGE,
+    };
+  },
   setup() {
     const router = useRouter();
     const i18n = useI18n();
@@ -314,29 +321,33 @@ export default defineComponent({
 
     i18n.locale.value = localStorage.getItem("lang")
       ? (localStorage.getItem("lang") as string)
-      : "en";
+      : "th";
 
     const countries = {
       en: {
         flag: "media/flags/united-states.svg",
         name: "English",
       },
-      es: {
-        flag: "media/flags/spain.svg",
-        name: "Spanish",
+      th: {
+        flag: "media/flags/thailand.svg",
+        name: "ไทย",
       },
-      de: {
-        flag: "media/flags/germany.svg",
-        name: "German",
-      },
-      ja: {
-        flag: "media/flags/japan.svg",
-        name: "Japanese",
-      },
-      fr: {
-        flag: "media/flags/france.svg",
-        name: "French",
-      },
+      // es: {
+      //   flag: "media/flags/spain.svg",
+      //   name: "Spanish",
+      // },
+      // de: {
+      //   flag: "media/flags/germany.svg",
+      //   name: "German",
+      // },
+      // ja: {
+      //   flag: "media/flags/japan.svg",
+      //   name: "Japanese",
+      // },
+      // fr: {
+      //   flag: "media/flags/france.svg",
+      //   name: "French",
+      // },
     };
 
     const signOut = () => {

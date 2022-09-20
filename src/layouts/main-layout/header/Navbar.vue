@@ -104,7 +104,7 @@
         data-kt-menu-attach="parent"
         data-kt-menu-placement="bottom-end"
       >
-        <img src="media/avatars/300-1.jpg" alt="user" />
+        <img :src="imageUrl + profile.imageProfile" alt="user" />
       </div>
       <KTUserMenu />
       <!--end::Menu wrapper-->
@@ -143,6 +143,14 @@ export default defineComponent({
     KTQuickLinksMenu,
     KTUserMenu,
     KTThemeModeSwitcher,
+  },
+  data() {
+    return {
+      profile: localStorage.getItem("dataInfo")
+        ? JSON.parse(localStorage.getItem("dataInfo"))
+        : null,
+      imageUrl: process.env.VUE_APP_API_URL_IMAGE,
+    };
   },
   setup() {
     const store = useStore();

@@ -180,7 +180,7 @@
                     <div
                       class="image-input image-input-empty image-input-outline"
                       id="kt_user_edit_avatar"
-                      style="background-image: url(media/avatars/blank.png)"
+                      :style="{'background-image': `url(${profile.imageProfile ? profile.imageProfile : 'media/avatars/blank.png'})`}"
                     >
                       <div class="image-input-wrapper"></div>
                       <label
@@ -194,9 +194,14 @@
                         <input
                           type="file"
                           name="profile_avatar"
+                          v-on:change="onFileChange($event)"
                           accept=".png, .jpg, .jpeg"
                         />
-                        <input type="hidden" name="profile_avatar_remove" />
+                        <input
+                          type="hidden"
+                          name="profile_avatar_remove"
+                          v-model="file"
+                        />
                       </label>
                       <span
                         class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
@@ -221,13 +226,13 @@
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >บัญชีผู้ใช้งาน</label
-                  >
+                    >บัญชีผู้ใช้งาน
+                  </label>
                   <div class="col-9">
                     <input
                       class="form-control form-control-lg form-control-solid"
                       type="text"
-                      value=""
+                      v-model="profile.username"
                     />
                   </div>
                 </div>
@@ -239,7 +244,7 @@
                     <input
                       class="form-control form-control-lg form-control-solid"
                       type="password"
-                      value=""
+                      v-model="profile.password"
                     />
                   </div>
                 </div>
@@ -251,7 +256,7 @@
                     <input
                       class="form-control form-control-lg form-control-solid"
                       type="text"
-                      value=""
+                      v-model="profile.firstName"
                       placeholder="ชื่อ"
                     />
                   </div>
@@ -265,7 +270,7 @@
                       <input
                         type="text"
                         class="form-control form-control-lg form-control-solid"
-                        value=""
+                        v-model="profile.lastName"
                         placeholder="นามสกุล"
                       />
                     </div>
@@ -285,13 +290,13 @@
                       <input
                         type="text"
                         class="form-control form-control-lg form-control-solid"
-                        value=""
+                        v-model="profile.phoneNumber"
                         placeholder="หมายเลขโทรศัพท์"
                       />
                     </div>
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
                     >ประเภทผู้ใช้งาน</label
                   >
@@ -305,7 +310,7 @@
                       ></select>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -320,20 +325,20 @@
               <div class="col-xl-7 my-2">
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >ชื่อ</label
+                    >ที่อยู่</label
                   >
                   <div class="col-9">
                     <input
                       class="form-control form-control-lg form-control-solid"
                       type="text"
-                      value=""
-                      placeholder="ชื่อ"
+                     v-model="addressProfile.address"
+                      placeholder="ที่อยู่"
                     />
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >ประเภทผู้ใช้งาน</label
+                    >จังหวัด</label
                   >
                   <div class="col-9">
                     <div class="input-group input-group-lg input-group-solid">
@@ -341,14 +346,22 @@
                         name=""
                         class="form-control form-control-lg form-control-solid"
                         id=""
-                        aria-placeholder="ประเภทผู้ใช้งาน"
-                      ></select>
+                         @change="callDistrict($event.target.value)"
+                       v-model="addressProfile.provinceCode"
+                        aria-placeholder="จังหวัด"
+                      >
+                      <option
+                          v-for="p in province"
+                          :key="p.province_code"
+                          :value="p.province_code"
+                          >{{ p.province_th }}</option>
+                          </select>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >ประเภทผู้ใช้งาน</label
+                    >อำเภอ</label
                   >
                   <div class="col-9">
                     <div class="input-group input-group-lg input-group-solid">
@@ -356,14 +369,23 @@
                         name=""
                         class="form-control form-control-lg form-control-solid"
                         id=""
-                        aria-placeholder="ประเภทผู้ใช้งาน"
-                      ></select>
+                        v-model="addressProfile.districtCode"
+                        @change="callSubDistrict($event.target.value)"
+                        aria-placeholder="อำเภอ"
+                      >
+                      <option
+                          v-for="d in district"
+                          :key="d.district_code"
+                          :value="d.district_code"
+                          >{{ d.district_th }}</option
+                        >
+                        </select>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >ประเภทผู้ใช้งาน</label
+                    >ตำบล</label
                   >
                   <div class="col-9">
                     <div class="input-group input-group-lg input-group-solid">
@@ -371,21 +393,31 @@
                         name=""
                         class="form-control form-control-lg form-control-solid"
                         id=""
-                        aria-placeholder="ประเภทผู้ใช้งาน"
-                      ></select>
+                         v-model="addressProfile.subDistrictCode"
+                        @change="callPost($event.target.value)"
+                        aria-placeholder="ตำบล"
+                      >
+                        <option
+                          v-for="sd in subDistrict"
+                          :key="sd.subDistrict_code"
+                          :value="sd.subDistrict_code"
+                          >{{ sd.subDistrict_th }}</option
+                        >
+                        </select>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-3 text-lg-right text-left"
-                    >ชื่อ</label
+                    >รหัสไปรษณีย์</label
                   >
                   <div class="col-9">
                     <input
                       class="form-control form-control-lg form-control-solid"
                       type="text"
-                      value=""
-                      placeholder="ชื่อ"
+                       disabled
+                      v-model="addressProfile.postCode"
+                      placeholder="รหัสไปรษณีย์"
                     />
                   </div>
                 </div>
@@ -411,7 +443,7 @@
                       ><input
                         class="form-check-input"
                         type="checkbox"
-                        value="1"
+                        v-model="profile.enable"
                       /><span
                         class="form-check-label fw-semobold text-gray-400"
                       >
@@ -424,10 +456,23 @@
                   <label class="col-form-label col-3 text-lg-right text-left"
                     >การเข้าถึงเมนูใช้งาน</label
                   >
-                  <div class="col-9">
-                   <label class="form-check form-check-custom form-check-solid me-10"><input class="form-check-input h-20px w-20px" type="checkbox" name="communication[]" value="email"><span class="form-check-label fw-semobold"> Email </span></label>
-                   <label class="form-check form-check-custom form-check-solid me-10"><input class="form-check-input h-20px w-20px" type="checkbox" name="communication[]" value="email"><span class="form-check-label fw-semobold"> Email </span></label>
-                   <label class="form-check form-check-custom form-check-solid me-10"><input class="form-check-input h-20px w-20px" type="checkbox" name="communication[]" value="email"><span class="form-check-label fw-semobold"> Email </span></label>
+                  <!-- {{ Menu }} -->
+                  <div class="col-9" v-if="Menu != undefined">
+                    <label
+                      v-for="(item, index) in Menu"
+                      :key="index"
+                      class="form-check form-check-custom form-check-solid me-10"
+                      ><input
+                        class="form-check-input h-20px w-20px"
+                        type="checkbox"
+                        name="cb_permissionMenu"
+                        :value="item.route"
+                        @change="getPermissionMenu"
+                      />
+                      <span class="form-check-label fw-semobold">
+                        {{ item.heading }}
+                      </span></label
+                    >
                   </div>
                 </div>
               </div>
@@ -438,16 +483,217 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
-import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
-
-export default defineComponent({
-  name: "user-manage",
-  components: {
-    KTPageTitle,
+<script>
+import { defineComponent, onMounted, ref } from "vue";
+// import { setCurrentPageTitle } from "@/core/helpers/breadcrumb";
+import MainMenuConfig from "@/core/config/MainMenuConfig";
+import axios from "axios";
+import jQuery from "jquery";
+const $ = jQuery;
+const Menu = MainMenuConfig;
+export default {
+  name: "UsersManage",
+  data() {
+    return {
+      province: null,
+      district: null,
+      subDistrict: null,
+      userType: null,
+      urldata: null,
+      profile: {
+        userName: "",
+        firstName: "",
+        lastName: "",
+        userType: [],
+      },
+      addressProfile: {
+        address: "",
+        provinceCode: "",
+        districtCode: "",
+        subDistrictCode: "",
+        postCode: "",
+      },
+      api: Object,
+      Menu: {
+        pages: Object,
+      },
+      file: null,
+    };
   },
-});
+
+  async mounted() {
+    this.Menu = Menu[0].pages;
+    this.urldata = this.$route.params.id;
+    const response = await axios.get(
+      process.env.VUE_APP_API_URL + "/getProfile" + "?id=" + this.urldata,
+      {
+        headers: { token: localStorage.getItem("id_token") },
+      }
+    );
+    console.log(response.data.data);
+    this.profile = response.data.data;
+    if (this.profile.addressProfile != null) {
+      this.addressProfile.address = this.profile.addressProfile.addressNo;
+      this.addressProfile.provinceCode = this.profile.addressProfile.province_code;
+      this.addressProfile.districtCode = this.profile.addressProfile.district_code;
+      this.addressProfile.subDistrictCode = this.profile.addressProfile.subDistrict_code;
+      this.addressProfile.postCode = this.profile.addressProfile.zipcode;
+    }
+    if (this.profile.imageProfile != null) {
+      this.profile.imageProfile =
+        process.env.VUE_APP_API_URL_IMAGE + this.profile.imageProfile;
+    }
+    this.setPermissionMenu(this.profile.permissionMenu);
+    // const getUserType = await axios.get(
+    //   api[0]["BASE"] + api[0]["USER"]["GET_USER_TYPE"]
+    // );
+    // console.log(getUserType.data);
+    // this.userType = getUserType.data.data;
+
+    const getProvince = await axios.get(
+      process.env.VUE_APP_API_URL + "/getProvince"
+    );
+    console.log(getProvince.data);
+    this.province = getProvince.data.data;
+    if (this.profile.addressProfile != null) {
+      this.callDistrict(this.profile.addressProfile.province_code);
+      this.callSubDistrict(this.profile.addressProfile.district_code);
+      this.callPost(this.profile.addressProfile.subDistrict_code);
+    }
+  },
+  methods: {
+    async callDistrict(event) {
+      const getDistrict = await axios.get(
+        process.env.VUE_APP_API_URL + "/getDistrict" + "?provinceCode=" + event
+      );
+      console.log(getDistrict.data);
+      this.district = getDistrict.data.data;
+    },
+    async callSubDistrict(event) {
+      const getSubDistrict = await axios.get(
+        process.env.VUE_APP_API_URL +
+          "/getSubDistrict" +
+          "?provinceCode=" +
+          this.addressProfile.provinceCode +
+          "&districtCode=" +
+          event
+      );
+      console.log(getSubDistrict.data);
+      this.subDistrict = getSubDistrict.data.data;
+    },
+    async callPost(event) {
+      if (this.subDistrict != null) {
+        for (const loopPost of this.subDistrict) {
+          if (loopPost.subDistrict_code == event) {
+            this.addressProfile.postCode = loopPost.zipcode;
+          }
+        }
+      }
+    },
+    onFileChange(event) {
+      this.file = event.target.files[0];
+      this.profile.imageProfile = URL.createObjectURL(this.file);
+    },
+    // async handleUpdate() {
+    //   const formData = new FormData();
+    //   formData.append("id", this.profile.id);
+    //   formData.append("firstName", this.profile.firstName);
+    //   formData.append("lastName", this.profile.lastName);
+    //   formData.append("phoneNumber", this.profile.phoneNumber);
+    //   formData.append("addressId", this.addressProfile.subDistrictCode);
+    //   formData.append("addressNo", this.addressProfile.address);
+    //   formData.append("permissionMenu", this.profile.permissionMenu);
+    //   formData.append("userType", this.profile.userType.code);
+    //   if (this.file != null) {
+    //     const uploadImg = new FormData();
+    //     uploadImg.append("file", this.file);
+    //     await axios
+    //       .post(api[0].BASE + api[0].POST.UPLOAD_IMAGE_PROFILE, uploadImg, {
+    //         headers: { token: localStorage.getItem("token") },
+    //       })
+    //       .then((res) => {
+    //         formData.append("imageProfile", res.data.data);
+    //         axios
+    //           .post(api[0].BASE + api[0].USER.EDIT_PROFILE, formData, {
+    //             headers: { token: localStorage.getItem("token") },
+    //           })
+    //           .then((res) => {
+    //             console.log(res.data);
+    //             if (this.profile.id == localStorage.getItem("u_id")) {
+    //               console.log(res.data.data);
+    //               localStorage.setItem(
+    //                 "dataInfo",
+    //                 JSON.stringify(res.data.data)
+    //               );
+    //               setTimeout(() => {
+    //                 this.$emit("checkLogin");
+    //               }, 500);
+    //             }
+    //             this.$router.go(-1);
+    //           })
+    //           .catch((error) => {
+    //             console.log(error);
+    //           });
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   } else {
+    //     await axios
+    //       .post(api[0].BASE + api[0].USER.EDIT_PROFILE, formData, {
+    //         headers: { token: localStorage.getItem("token") },
+    //       })
+    //       .then((res) => {
+    //         console.log(res.data);
+    //         if (this.profile.id == localStorage.getItem("u_id")) {
+    //           console.log(res.data.data);
+    //           localStorage.setItem("dataInfo", JSON.stringify(res.data.data));
+    //           setTimeout(() => {
+    //             this.$emit("checkLogin");
+    //           }, 500);
+    //         }
+    //         this.$router.go(-1);
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
+    // },
+    getPermissionMenu() {
+      this.$nextTick(() => {
+        const list = [];
+        if ($("input[name=cb_permissionMenu]:checked").length > 0) {
+          for (
+            let index = 0;
+            index < $("input[name=cb_permissionMenu]:checked").length;
+            index++
+          ) {
+            const element = $("input[name=cb_permissionMenu]:checked")[index];
+            list.push($(element).val());
+          }
+        }
+        this.profile.permissionMenu = list.toString();
+        console.log(this.profile.permissionMenu);
+      });
+    },
+    setPermissionMenu(data) {
+      this.$nextTick(() => {
+        if (data) {
+          for (
+            let index = 0;
+            index < $("input[name=cb_permissionMenu]").length;
+            index++
+          ) {
+            const element = $("input[name=cb_permissionMenu]")[index];
+            if (data.indexOf(element.value) > -1) {
+              $(element).prop("checked", true);
+            }
+          }
+        }
+      });
+    },
+  },
+};
 </script>
 <style scoped>
 .nav-tabs .nav-link:hover,
@@ -458,7 +704,7 @@ export default defineComponent({
 .form-group {
   margin-bottom: 1.75rem;
 }
-.form-check{
+.form-check {
   margin-bottom: 1rem;
 }
 .nav-tabs .nav-link.active,

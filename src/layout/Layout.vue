@@ -4,11 +4,11 @@
   <!-- begin:: Body -->
   <div class="page d-flex flex-row flex-column-fluid">
     <!-- begin:: Aside Left -->
-    <KTAside
+    <!-- <KTAside
       v-if="asideEnabled"
       :lightLogo="themeLightLogo"
       :darkLogo="themeDarkLogo"
-    ></KTAside>
+    ></KTAside> -->
     <!-- end:: Aside Left -->
 
     <div id="kt_wrapper" class="d-flex flex-column flex-row-fluid wrapper">
@@ -58,7 +58,7 @@
 import { defineComponent, computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import KTAside from "@/layout/aside/Aside.vue";
+// import KTAside from "@/layout/aside/Aside.vue";
 import KTHeader from "@/layout/header/Header.vue";
 import KTFooter from "@/layout/footer/Footer.vue";
 import HtmlClass from "@/core/services/LayoutService";
@@ -85,9 +85,10 @@ import {
 } from "@/core/helpers/config";
 
 export default defineComponent({
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Layout",
   components: {
-    KTAside,
+    // KTAside,
     KTHeader,
     KTFooter,
     KTToolbar,

@@ -4,7 +4,7 @@
     class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6"
     id="kt_app_sidebar_footer"
   >
-    <a
+    <!-- <a
       href="https://preview.keenthemes.com/metronic8/vue/docs/#/doc-overview"
       class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
       data-bs-toggle="tooltip"
@@ -16,7 +16,7 @@
       <span class="svg-icon btn-icon svg-icon-2 m-0">
         <inline-svg src="media/icons/duotune/general/gen005.svg" />
       </span>
-    </a>
+    </a> -->
   </div>
   <!--end::Footer-->
 </template>

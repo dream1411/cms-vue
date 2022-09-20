@@ -27,7 +27,8 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
    * Get current user object
    * @returns User
    */
-  get currentUser(): User {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  get currentUser(): Object {
     return this.user;
   }
 
@@ -54,8 +55,8 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Mutation
   [Mutations.SET_AUTH](user) {
-    console.log(user);
     this.isAuthenticated = true;
+    localStorage.setItem("dataInfo",JSON.stringify(user))
     this.user = user;
     this.errors = {};
     JwtService.saveToken(user.token);
@@ -88,6 +89,7 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
       .then(({ data }) => {
         console.log(data.data.profile);
         this.context.commit(Mutations.SET_AUTH, data.data.profile);
+        this.context.commit(Mutations.SET_USER, data.data.profile);
       })
       .catch(({ error }) => {
         console.log(error);

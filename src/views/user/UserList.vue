@@ -54,6 +54,7 @@
   </div>
   <div class="card">
     <div class="card-header border-0 pt-6">
+      {{selectedIds}}
       <!--begin::Card title-->
       <div class="card-title">
         <!--begin::Search-->
@@ -170,6 +171,7 @@
                     ? imageUrl + tableData.imageProfile
                     : 'media/avatars/blank.png'
                 "
+                @error="setAltImg"
                 alt=""
               />
             </div>
@@ -298,7 +300,7 @@ export default defineComponent({
     Datatable,
     ExportCustomerModal,
     AddCustomerModal,
-    KTPageTitle
+    KTPageTitle,
   },
   data() {
     return {
@@ -522,6 +524,9 @@ export default defineComponent({
       }
 
       return parseFloat(humanTime).toFixed(0) + " " + units;
+    },
+    setAltImg(event) {
+      event.target.src = "media/avatars/blank.png";
     },
   },
 });

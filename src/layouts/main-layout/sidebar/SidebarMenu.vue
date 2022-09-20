@@ -149,16 +149,12 @@
           </template>
         </template>
 
-        <div class="menu-item pt-5">
-          <!--begin:Menu content-->
+        <!-- <div class="menu-item pt-5">
           <div class="menu-content">
             <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
           </div>
-          <!--end:Menu content-->
         </div>
-        <!--begin:Menu item-->
         <div class="menu-item">
-          <!--begin:Menu link-->
           <a
             class="menu-link"
             href="https://preview.keenthemes.com/metronic8/vue/docs/#/utilities"
@@ -177,11 +173,8 @@
             </span>
             <span class="menu-title">Components</span>
           </a>
-          <!--end:Menu link-->
         </div>
-        <!--end:Menu item-->
         <div class="menu-item">
-          <!--begin:Menu link-->
           <a
             class="menu-link"
             href="https://preview.keenthemes.com/metronic8/vue/docs/#/doc-overview"
@@ -197,12 +190,8 @@
             </span>
             <span class="menu-title">Documentation</span>
           </a>
-          <!--end:Menu link-->
         </div>
-        <!--begin:Menu item-->
-        <!--end:Menu item-->
         <div class="menu-item">
-          <!--begin:Menu link-->
           <a
             class="menu-link"
             href="https://preview.keenthemes.com/metronic8/vue/docs/#/changelog"
@@ -221,14 +210,9 @@
             </span>
             <span class="menu-title">Changelog</span>
           </a>
-          <!--end:Menu link-->
-        </div>
-        <!--begin:Menu item-->
-        <!--end:Menu item-->
+        </div> -->
       </div>
-      <!--end::Menu-->
     </div>
-    <!--end::Menu wrapper-->
   </div>
   <!--end::sidebar menu-->
 </template>

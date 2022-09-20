@@ -16,6 +16,7 @@ module.exports = {
     "no-console": "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     'prettier/prettier': 0,
+    "vue/no-multiple-template-root": "off"
     // "prettier/prettier": [
     //   "error",
     //   {
