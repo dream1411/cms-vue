@@ -134,7 +134,8 @@ import KTQuickLinksMenu from "@/layouts/main-layout/menus/QuickLinksMenu.vue";
 import KTUserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/main-layout/theme-mode/ThemeModeSwitcher.vue";
 import { useStore } from "vuex";
-
+import { Actions } from "@/store/enums/StoreEnums";
+import { useRouter } from "vue-router";
 export default defineComponent({
   name: "header-navbar",
   components: {
@@ -152,13 +153,19 @@ export default defineComponent({
       imageUrl: process.env.VUE_APP_API_URL_IMAGE,
     };
   },
+
   setup() {
+    const router = useRouter();
     const store = useStore();
 
     const themeMode = computed(() => {
       return store.getters.getThemeMode;
     });
-
+    if (localStorage.getItem("dataInfo") == null) {
+      store
+        .dispatch(Actions.LOGOUT)
+        .then(() => router.push({ name: "sign-in" }));
+    }
     return {
       themeMode,
     };
