@@ -15,6 +15,9 @@
             />
           </div>
         </td>
+        <td>
+          {{ (page - 1) * perpage + (i + 1) }}
+        </td>
         <template v-for="(properties, j) in header" :key="j">
           <td :class="{ 'text-end': j === header.length - 1 }">
             <slot :name="`${properties.columnLabel}`" :row="row">
@@ -36,6 +39,8 @@ export default defineComponent({
   props: {
     header: { type: Array, required: true },
     data: { type: Array, required: true },
+    page: { type: Number, required: true },
+    perpage: { type: Number, required: true },
     currentlySelectedItems: { type: Array, required: false, default: () => [] },
     checkboxEnabled: { type: Boolean, required: false, default: false },
     checkboxLabel: { type: String, required: false, default: "id" },
@@ -44,7 +49,6 @@ export default defineComponent({
   setup(props, { emit }) {
     //eslint-disable-next-line
     const selectedItems = ref<Array<any>>([]);
-
     watch(
       () => [...props.currentlySelectedItems],
       (currentValue) => {

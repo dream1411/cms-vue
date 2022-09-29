@@ -9,7 +9,7 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" :src="imageUrl + profile.imageProfile" />
+          <img alt="Logo" :src="profile.imageProfile != null ? imageUrl + profile.imageProfile:'media/avatars/blank.png'" />
         </div>
         <!--end::Avatar-->
 
@@ -37,9 +37,9 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <router-link :to="'/users/manage/' + profile.id" class="menu-link px-5">
+      <a  :href="$router.resolve({name:'Usermanage', params: {id:  profile.id}}).href" class="menu-link px-5">
         โปรไฟล์
-      </router-link>
+      </a>
     </div>
 
     <!-- <div class="menu-item px-5">

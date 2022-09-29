@@ -29,7 +29,7 @@
           <div
             :class="{
               'container-fluid': contentWidthFluid,
-              container: !contentWidthFluid
+              container: !contentWidthFluid,
             }"
           >
             <KTMobilePageTitle
@@ -73,6 +73,8 @@ import KTDrawerMessenger from "@/layout/extras/DrawerMessenger.vue";
 import { Actions } from "@/store/enums/StoreEnums";
 import { MenuComponent, DrawerComponent } from "@/assets/ts/components/index";
 import { removeModalBackdrop } from "@/core/helpers/dom";
+import jQuery from "jquery";
+const $ = jQuery;
 import {
   toolbarDisplay,
   // loaderEnabled,
@@ -81,8 +83,9 @@ import {
   // asideEnabled,
   subheaderDisplay,
   themeLightLogo,
-  themeDarkLogo
+  themeDarkLogo,
 } from "@/core/helpers/config";
+import axios from "axios";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -98,7 +101,7 @@ export default defineComponent({
     KTExplore,
     KTDrawerMessenger,
     KTLoader,
-    KTMobilePageTitle
+    KTMobilePageTitle,
   },
   setup() {
     const store = useStore();
@@ -143,6 +146,16 @@ export default defineComponent({
         if (!store.getters.isUserAuthenticated) {
           router.push({ name: "sign-in" });
         }
+        const response = axios.get(
+          process.env.VUE_APP_API_URL +
+            "/getProfile" +
+            "?id=" +
+            route.params.id,
+          {
+            headers: { token: localStorage.getItem("id_token") },
+          }
+        );
+        console.log(response);
 
         removeModalBackdrop();
       }
@@ -158,8 +171,8 @@ export default defineComponent({
       pageTitle,
       breadcrumbs,
       themeLightLogo,
-      themeDarkLogo
+      themeDarkLogo,
     };
-  }
+  },
 });
 </script>

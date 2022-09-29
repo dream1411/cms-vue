@@ -13,6 +13,7 @@
         <option :value="10">10</option>
         <option :value="25">25</option>
         <option :value="50">50</option>
+        <option :value="100">100</option>
       </select>
     </label>
   </div>
@@ -30,6 +31,7 @@ import {
 export default defineComponent({
   name: "table-items-per-page-select",
   components: {},
+
   props: {
     itemsPerPage: { type: Number, default: 10 },
     itemsPerPageDropdownEnabled: {
@@ -38,7 +40,8 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: ["update:itemsPerPage"],
+  emits: ["update:itemsPerPage", "perpage-change"],
+
   setup(props, { emit }) {
     const inputItemsPerPage = ref(10);
 
@@ -52,6 +55,7 @@ export default defineComponent({
       },
       set(value: number): void {
         emit("update:itemsPerPage", value);
+        emit("perpage-change", value);
       },
     });
 

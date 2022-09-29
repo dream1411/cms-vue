@@ -3,6 +3,7 @@
     <TableItemsPerPageSelect
       v-model:itemsPerPage="itemsCountInTable"
       :items-per-page-dropdown-enabled="itemsPerPageDropdownEnabled"
+      @perpage-change="itemsCountInTable"
     />
     <TablePagination
       v-if="pageCount > 1"
@@ -43,7 +44,7 @@ export default defineComponent({
     },
     currentPage: { type: Number, required: false, default: 1 },
   },
-  emits: ["update:itemsPerPage", "page-change"],
+  emits: ["update:itemsPerPage", "page-change","perpage-change"],
   setup(props, { emit }) {
     const page = ref(props.currentPage);
     const inputItemsPerPage = ref(props.itemsPerPage);
@@ -78,6 +79,9 @@ export default defineComponent({
       set(value: number): void {
         inputItemsPerPage.value = value;
         emit("update:itemsPerPage", value);
+        emit("perpage-change", value);
+        console.log(value);
+        
       },
     });
 

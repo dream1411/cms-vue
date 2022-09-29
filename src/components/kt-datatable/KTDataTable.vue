@@ -5,6 +5,8 @@
       @on-sort="onSort"
       :header="header"
       :data="dataToDisplay"
+      :page="nowPage"
+      :perpage="itemsInTable"
       :checkboxEnabled="checkboxEnabled"
       :checkboxLabel="checkboxLabel"
       :empty-table-text="emptyTableText"
@@ -18,6 +20,7 @@
     </TableContent>
     <TableFooter
       @page-change="pageChange"
+      @perpage-change="perPageChange"
       :current-page="currentPage"
       v-model:itemsPerPage="itemsInTable"
       :count="totalItems"
@@ -37,7 +40,7 @@ export default defineComponent({
   props: {
     header: { type: Array, required: true },
     data: { type: Array, required: true },
-    itemsPerPage: { type: Number, default: 10 },
+    itemsPerPage: { type: Number, default: 25 },
     itemsPerPageDropdownEnabled: {
       type: Boolean,
       required: false,
@@ -58,6 +61,7 @@ export default defineComponent({
   },
   emits: [
     "page-change",
+    "perpage-change",
     "on-sort",
     "on-items-select",
     "on-items-per-page-change",
@@ -67,19 +71,30 @@ export default defineComponent({
     TableFooter,
   },
   setup(props, { emit }) {
+     const nowPage = ref<number>(1);
     const currentPage = ref(props.currentPage);
     const itemsInTable = ref<number>(props.itemsPerPage);
-
-    watch(
-      () => itemsInTable.value,
+    console.log(currentPage);
+    watch(() => itemsInTable.value,
       (val) => {
         currentPage.value = 1;
+        console.log(val);
         emit("on-items-per-page-change", val);
+         emit("page-change", 1);
       }
     );
-
+     watch(() => currentPage.value,
+      (val) => {
+       return  nowPage.value = val ;
+      }
+    );
+    const perPageChange = (perpage: number) => {
+      emit("perpage-change", perpage);
+      console.log(perpage);
+    };
     const pageChange = (page: number) => {
       currentPage.value = page;
+      console.log(page);
       emit("page-change", page);
     };
 
@@ -96,11 +111,12 @@ export default defineComponent({
     });
 
     const totalItems = computed(() => {
+      console.log(props.data);
       if (props.data) {
         if (props.data.length <= itemsInTable.value) {
-          return props.total;
+          return props.data["totalElements"];
         } else {
-          return props.data.length;
+          return props.data["totalElements"];
         }
       }
       return 0;
@@ -117,11 +133,13 @@ export default defineComponent({
 
     return {
       pageChange,
+      perPageChange,
       dataToDisplay,
       onSort,
       onItemSelect,
       itemsInTable,
       totalItems,
+      nowPage,
     };
   },
 });

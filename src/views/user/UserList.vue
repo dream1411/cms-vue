@@ -3,58 +3,12 @@
     <div
       class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap"
     >
-      <!--begin::Details-->
-      <KTPageTitle />
-      <!-- <div class="d-flex align-items-center flex-wrap mr-2">
-									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Edit User</h5>
-									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
-									<div class="d-flex align-items-center" id="kt_subheader_search">
-										<span class="text-dark-50 font-weight-bold" id="kt_subheader_total">Alex Stone</span>
-									</div>
-								</div> -->
-      <!--end::Details-->
-      <!--begin::Toolbar-->
-      <!-- <div class="d-flex align-items-center">
-									<a href="/metronic/demo1/#.html" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
-									<div class="btn-group ml-2">
-										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base">Save Changes</button>
-										<button type="button" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-										<div class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
-											<ul class="navi py-5">
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-writing"></i>
-														</span>
-														<span class="navi-text">Save &amp; continue</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-medical-records"></i>
-														</span>
-														<span class="navi-text">Save &amp; add new</span>
-													</a>
-												</li>
-												<li class="navi-item">
-													<a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-hourglass-1"></i>
-														</span>
-														<span class="navi-text">Save &amp; exit</span>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div> -->
-      <!--end::Toolbar-->
+      <KTPageTitle></KTPageTitle>
     </div>
   </div>
   <div class="card">
     <div class="card-header border-0 pt-6">
-      {{selectedIds}}
+      <!-- {{ selectedIds }} -->
       <!--begin::Card title-->
       <div class="card-title">
         <!--begin::Search-->
@@ -86,12 +40,23 @@
             type="button"
             class="btn btn-light-primary me-3"
             data-bs-toggle="modal"
-            data-bs-target="#kt_customers_export_modal"
+            data-bs-target="#kt_filter_modal"
           >
-            <span class="svg-icon svg-icon-2">
-              <inline-svg src="media/icons/duotune/arrows/arr078.svg" />
+            <span class="svg-icon svg-icon-6 svg-icon-muted me-1">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
             </span>
-            ดาวน์โหลด
+            ตัวกรอง
           </button>
           <!--end::Export-->
           <!--begin::Add customer-->
@@ -112,14 +77,14 @@
         >
           <div class="fw-bold me-5">
             <span class="me-2">{{ selectedIds.length }}</span
-            >Selected
+            >รายการ
           </div>
           <button
             type="button"
             class="btn btn-danger"
             @click="deleteFewCustomers()"
           >
-            Delete Selected
+            ลบสมาชิก
           </button>
         </div>
         <!--end::Group actions-->
@@ -133,14 +98,14 @@
               class="me-2"
               data-kt-customer-table-select="selected_count"
             ></span
-            >Selected
+            >รายการ
           </div>
           <button
             type="button"
             class="btn btn-danger"
             data-kt-customer-table-select="delete_selected"
           >
-            Delete Selected
+            ลบสมาชิก
           </button>
         </div>
         <!--end::Group actions-->
@@ -151,6 +116,8 @@
       <Datatable
         @on-sort="sort"
         @on-items-select="onItemSelect"
+        @page-change="pageChange"
+        @perpage-change="perPageChange"
         :data="tableData"
         :header="tableHeader"
         :enable-items-per-page-dropdown="true"
@@ -168,7 +135,7 @@
               <img
                 :src="
                   tableData.imageProfile != null
-                    ? imageUrl + tableData.imageProfile
+                    ? checkImage(tableData.imageProfile)
                     : 'media/avatars/blank.png'
                 "
                 @error="setAltImg"
@@ -246,60 +213,140 @@
               </li>
             </ul>
           </div>
-          <!--end::Accordion-->
-          <!-- <a href="#"
-            class="btn btn-sm btn-light btn-active-light-primary"
-            data-kt-menu-trigger="click"
-            data-kt-menu-placement="bottom-end"
-            data-kt-menu-flip="top-end"
-            >Actions
-            <span class="svg-icon svg-icon-5 m-0">
-              <inline-svg src="media/icons/duotune/arrows/arr072.svg" />
-            </span>
-          </a>
-          <div
-            class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semobold fs-7 w-125px py-4"
-            data-kt-menu="true"
-          >
-            <div class="menu-item px-3">
-              <router-link
-                to="/apps/customers/customer-details"
-                class="menu-link px-3"
-                >View</router-link >
-            </div>
-       
-            <div class="menu-item px-3">
-                {{tableData.id}}
-              <a @click="deleteCustomer(tableData.id)" class="menu-link px-3"
-                >Delete</a
-              >
-            </div>
-          </div> -->
         </template>
       </Datatable>
     </div>
   </div>
+  <div class="modal fade" id="kt_filter_modal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+      <!--begin::Modal content-->
+      <div class="modal-content">
+        <!--begin::Modal header-->
+        <div class="modal-header">
+          <!--begin::Modal title-->
+          <h2 class="fw-bold">ตัวกรอง</h2>
+          <!--end::Modal title-->
 
-  <ExportCustomerModal></ExportCustomerModal>
-  <AddCustomerModal></AddCustomerModal>
+          <!--begin::Close-->
+          <div
+            id="kt_filter_modal_close"
+            data-bs-dismiss="modal"
+            class="btn btn-icon btn-sm btn-active-icon-primary"
+          >
+            <span class="svg-icon svg-icon-1">
+              <inline-svg src="media/icons/duotune/arrows/arr061.svg" />
+            </span>
+          </div>
+          <!--end::Close-->
+        </div>
+        <!--end::Modal header-->
+
+        <!--begin::Modal body-->
+        <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+          <!--begin::Form-->
+          <el-form @submit.prevent="filter()" :model="formData">
+            <!--begin::Input group-->
+            <div class="fv-row mb-10">
+              <!--begin::Label-->
+              <label class="fs-5 fw-semobold form-label mb-5"
+                >วันที่สร้างเริ่มต้น - สิ้นสุด:</label
+              >
+              <!--end::Label-->
+
+              <!--begin::Input-->
+              <el-form-item prop="name">
+                <el-date-picker
+                  type="daterange"
+                  v-model="formData.dateRange"
+                  format="DD/MM/YYYY"
+                  value-format="YYYY-MM-DD"
+                >
+                </el-date-picker>
+              </el-form-item>
+              <!--end::Input-->
+            </div>
+            <div class="fv-row mb-10">
+              <!--begin::Label-->
+              <label class="fs-5 fw-semobold form-label mb-5"
+                >สิทธิการใช้งาน:</label
+              >
+              <!--end::Label-->
+
+              <!--begin::Input-->
+              <select class="form-control" v-model="formData.role">
+                <option value="1" key="admin" label="admin" />
+                <option value="2" key="user" label="user" />
+              </select>
+              <!--end::Input-->
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Actions-->
+            <div class="text-center">
+              <button
+                type="reset"
+                data-bs-dismiss="modal"
+                class="btn btn-light me-3"
+              >
+                ปิด
+              </button>
+              <!--begin::Button-->
+              <button
+                :data-kt-indicator="loading ? 'on' : null"
+                type="submit"
+                class="btn btn-lg btn-primary"
+              >
+                <span v-if="!loading" class="indicator-label">
+                  ค้นหา
+                  <span class="svg-icon svg-icon-3 ms-2 me-0">
+                    <inline-svg src="media/icons/duotune/arrows/arr064.svg" />
+                  </span>
+                </span>
+                <span v-if="loading" class="indicator-progress">
+                  กรุณารอสักครู่...
+                  <span
+                    class="spinner-border spinner-border-sm align-middle ms-2"
+                  ></span>
+                </span>
+              </button>
+              <!--end::Button-->
+            </div>
+            <!--end::Actions-->
+          </el-form>
+          <!--end::Form-->
+        </div>
+        <!--end::Modal body-->
+      </div>
+      <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+  </div>
+  <!-- <ExportCustomerModal></ExportCustomerModal> -->
+  <!-- <AddCustomerModal></AddCustomerModal> -->
 </template>
 
 <script lang="ts">
-import { MenuComponent } from "@/assets/ts/components";
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import { Sort } from "@/components/kt-datatable//table-partials/models";
-import ExportCustomerModal from "@/components/modals/forms/ExportCustomerModal.vue";
-import AddCustomerModal from "@/components/modals/forms/AddCustomerModal.vue";
+// import ExportCustomerModal from "@/components/modals/forms/ExportCustomerModal.vue";
+// import AddCustomerModal from "@/components/modals/forms/AddCustomerModal.vue";
 import arraySort from "array-sort";
 import axios from "axios";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
+import jQuery from "jquery";
+const $ = jQuery;
+import store from "@/store";
+import { Actions } from "@/store/enums/StoreEnums";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import router from "@/router";
 export default defineComponent({
   name: "customers-listing",
   components: {
     Datatable,
-    ExportCustomerModal,
-    AddCustomerModal,
+    // ExportCustomerModal,
+    // AddCustomerModal,
     KTPageTitle,
   },
   data() {
@@ -347,35 +394,14 @@ export default defineComponent({
       },
     ]);
     const selectedIds = ref<Array<number>>([]);
-
+    const pages = ref();
+     const perpages = ref();
     const tableData = ref([]);
     const initCustomers = ref([]);
 
     onMounted(() => {
       /* eslint-disable */
-      const response = axios
-        .get(
-          process.env.VUE_APP_API_URL +
-            "/getUserAll" +
-            "?sizeContents=9999&page=0&role=",
-          {
-            headers: { token: localStorage.getItem("id_token") },
-          }
-        )
-        .then((response) => {
-          tableData.value = response.data.data.content;
-          console.log(tableData);
-          initCustomers.value.splice(
-            0,
-            tableData.value.length,
-            ...tableData.value
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      //   console.log(response["data"]["data"]["content"]);
-
+      getDataTable();
       /* eslint-disable */
     });
 
@@ -388,23 +414,24 @@ export default defineComponent({
 
     const deleteCustomer = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
-        // if (tableData.value[i].id === id) {
-        //   tableData.value.splice(i, 1);
-        // }
+        if (tableData.value[i]["id"] === id) {
+          axios
+            .delete(process.env.VUE_APP_API_URL + "/deleteUser?id=" + id, {
+              headers: { token: localStorage.getItem("id_token") },
+            })
+            .then((res) => {
+              tableData.value.splice(i, 1);
+              store.dispatch(Actions.CLEARCACHE);
+            })
+            .catch((error) => {});
+        }
       }
     };
-
     const search = ref<string>("");
     const searchItems = () => {
-      tableData.value.splice(0, tableData.value.length, ...initCustomers.value);
       if (search.value !== "") {
-        let results = [];
-        for (let j = 0; j < tableData.value.length; j++) {
-          if (searchingFunc(tableData.value[j], search.value)) {
-            results.push(tableData.value[j]);
-          }
-        }
-        tableData.value.splice(0, tableData.value.length, ...results);
+        console.log(search.value);
+         getDataTable();
       }
     };
 
@@ -416,7 +443,6 @@ export default defineComponent({
           !(typeof obj[key] === "boolean")
         ) {
           if (obj[key] != null && obj[key] != undefined) {
-            console.log(obj[key]);
             if (obj[key].indexOf(value) != -1) {
               return true;
             }
@@ -435,6 +461,80 @@ export default defineComponent({
     const onItemSelect = (selectedItems: Array<number>) => {
       selectedIds.value = selectedItems;
     };
+    const pageChange = (page: number) => {
+      pages.value = page;
+      getDataTable();
+    };
+    const perPageChange = (perpage: number) => {
+      perpages.value = perpage;
+      getDataTable();
+    };
+    const loading = ref<boolean>(false);
+    const formData = ref({
+      dateRange: [],
+      role: "",
+    });
+    const filter = () => {
+      loading.value = true;
+      getDataTable();
+    };
+    const getDataTable = () => {
+      let sizeContents = 25;
+      let keyWord = "";
+      let page = 0;
+      let startDate = "";
+      let endDate = "";
+      let role = "";
+      if (pages.value != undefined) {
+        page = pages.value-1
+      }
+      if (perpages.value != undefined) {
+        sizeContents = perpages.value
+      }
+        if (search.value != undefined) {
+        keyWord = search.value
+      }
+      if (
+        formData.value.dateRange != null &&
+        formData.value.dateRange.length > 0
+      ) {
+        startDate = new Date(formData.value.dateRange[0]).getTime() + "";
+        endDate = new Date(formData.value.dateRange[1]).getTime() + "";
+      }
+      const response = axios
+        .get(
+          process.env.VUE_APP_API_URL +
+            "/getUserAll?sizeContents=" +
+            sizeContents +
+            "&page=" +
+            page +
+            "&role=" +
+            "&startDate=" +
+            startDate +
+            "&endDate=" +
+            endDate +
+            "&role=" +
+            formData.value.role +
+            "&keyWord=" + keyWord,
+          {
+            headers: { token: localStorage.getItem("id_token") },
+          }
+        )
+        .then((response) => {
+          loading.value = false;
+          tableData.value = response.data.data.content;
+          tableData.value["totalElements"] = response.data.data.totalElements;
+          initCustomers.value.splice(
+            0,
+            tableData.value.length,
+            ...tableData.value
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          router.push({ name: "sign-in" });
+        });
+    };
 
     return {
       tableData,
@@ -446,9 +546,21 @@ export default defineComponent({
       deleteFewCustomers,
       sort,
       onItemSelect,
+      pageChange,
+      perPageChange,
+      formData,
+      filter,
+      loading,
     };
   },
   methods: {
+    checkImage(imageProfile) {
+      if (imageProfile.indexOf("http") > -1) {
+        return imageProfile;
+      } else {
+        return this.imageUrl + imageProfile;
+      }
+    },
     formatDateTime(date) {
       const event = new Date(date);
       return event.toLocaleDateString("th-TH", {
@@ -460,7 +572,9 @@ export default defineComponent({
         second: "2-digit",
       });
     },
-
+    modalClose() {
+      $("#kt_filter_modal_close").modal("hide");
+    },
     getRole(role) {
       let returnText = "";
       if (role.superAdmin === true) {
@@ -474,7 +588,6 @@ export default defineComponent({
       var startDate = new Date(date);
       var endDate = new Date();
       let difference = endDate.getTime() - startDate.getTime();
-      console.log(difference);
       // let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
       // console.log(TotalDays + " วัน");
       let time = Math.abs(difference);
@@ -531,3 +644,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.el-date-editor--daterange.el-input__inner {
+  width: 100%;
+}
+</style>

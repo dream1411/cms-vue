@@ -53,7 +53,7 @@
         <!--begin::Image-->
         <img
           class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
-          src="media/logos/default-dark.svg"
+          src="media/logos/logo.svg"
           alt=""
         />
         <!--end::Image-->

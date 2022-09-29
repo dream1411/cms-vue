@@ -21,7 +21,10 @@
         :header="header"
         :checkbox-enabled="checkboxEnabled"
         :checkbox-label="checkboxLabel"
+        :page="page"
+        :perpage="perpage"
       >
+        >
         <template v-for="(_, name) in $slots" v-slot:[name]="{ row: item }">
           <slot :name="name" :row="item" />
         </template>
@@ -50,6 +53,8 @@ export default defineComponent({
   props: {
     header: { type: Array, required: true },
     data: { type: Array, required: true },
+    page: { type: Number, required: true },
+    perpage: { type: Number, required: true },
     emptyTableText: { type: String, default: "No data found" },
     sortLabel: { type: String, required: false, default: null },
     sortOrder: {
@@ -61,7 +66,7 @@ export default defineComponent({
     checkboxLabel: { type: String, required: false, default: "id" },
     loading: { type: Boolean, required: false, default: false },
   },
-  emits: ["on-sort", "on-items-select"],
+  emits: ["on-sort", "on-items-select","page-change"],
   components: {
     TableHeadRow,
     TableBodyRow,
@@ -71,7 +76,6 @@ export default defineComponent({
     const selectedItems = ref<Array<unknown>>([]);
     const allSelectedItems = ref<Array<unknown>>([]);
     const check = ref<boolean>(false);
-
     watch(
       () => props.data,
       () => {
@@ -86,6 +90,7 @@ export default defineComponent({
         });
       }
     );
+
 
     // eslint-disable-next-line
     const selectAll = (checked: any) => {
@@ -103,7 +108,7 @@ export default defineComponent({
     const itemsSelect = (value: any) => {
       selectedItems.value = [];
       //eslint-disable-next-line
-      value.forEach((item:any) => {
+      value.forEach((item: any) => {
         if (!selectedItems.value.includes(item)) selectedItems.value.push(item);
       });
     };

@@ -8,7 +8,7 @@ import router from "./router";
 import store from "./store";
 import ElementPlus from "element-plus";
 import i18n from "@/core/plugins/i18n";
-
+import th from 'element-plus/es/locale/lang/th'
 //imports for app initialization
 import ApiService from "@/core/services/ApiService";
 import { initApexCharts } from "@/core/plugins/apexcharts";
@@ -20,7 +20,9 @@ const app = createApp(App);
 
 app.use(store);
 app.use(router);
-app.use(ElementPlus);
+app.use(ElementPlus,{
+    locale: th,
+  });
 
 ApiService.init(app);
 initApexCharts(app);

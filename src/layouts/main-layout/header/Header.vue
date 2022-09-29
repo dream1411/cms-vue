@@ -26,7 +26,7 @@
               (themeMode === 'dark' && layout === 'light-header')
             "
             alt="Logo"
-            src="media/logos/default-dark.svg"
+            src="media/logos/logo.svg"
             class="h-20px h-lg-30px app-sidebar-logo-default"
           />
         </router-link>

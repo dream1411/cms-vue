@@ -11,13 +11,13 @@
               (themeMode === 'dark' && layout === 'light-sidebar')
             "
             alt="Logo"
-            src="media/logos/default-dark.svg"
+            src="media/logos/logo.svg"
             class="h-25px app-sidebar-logo-default"
           />
           <img
             v-if="themeMode === 'light' && layout === 'light-sidebar'"
             alt="Logo"
-            src="media/logos/default-dark.svg"
+            src="media/logos/logo.svg"
             class="h-25px app-sidebar-logo-default"
           />
         </div>
@@ -41,7 +41,7 @@
       </div>
       <img
         alt="Logo"
-        src="media/logos/default-dark.svg"
+        src="media/logos/logo.svg"
         class="app-sidebar-logo-minimize" style="height: 14px;"
       />
     </router-link>

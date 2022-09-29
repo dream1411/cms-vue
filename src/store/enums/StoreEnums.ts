@@ -7,6 +7,7 @@ enum Actions {
   ADD_CLASSNAME = "addClassName",
   VERIFY_AUTH = "verifyAuth",
   LOGIN = "login",
+  CLEARCACHE = "clearCache",
   LOGOUT = "logout",
   REGISTER = "register",
   UPDATE_USER = "updateUser",

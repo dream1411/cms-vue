@@ -104,7 +104,7 @@
         data-kt-menu-attach="parent"
         data-kt-menu-placement="bottom-end"
       >
-        <img :src="imageUrl + profile.imageProfile" alt="user" />
+        <img :src="profile.imageProfile != null ? imageUrl + profile.imageProfile:'media/avatars/blank.png'" alt="user" />
       </div>
       <KTUserMenu />
       <!--end::Menu wrapper-->

@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "/users/manage/:id",
-        name: "manage",
+        name: "Usermanage",
         component: () => import("@/views/user/UserManage.vue"),
         meta: {
           pageTitle: "แก้ไขสมาชิก",
@@ -41,11 +41,226 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "/users/create",
-        name: "create",
+        name: "Usercreate",
         component: () => import("@/views/user/UserManage.vue"),
         meta: {
           pageTitle: "เพิ่มสมาชิก",
           breadcrumbs: ["เพิ่มสมาชิก"],
+        },
+      },
+      {
+        path: "/banner",
+        name: "banner",
+        component: () => import("@/views/banner/BannerList.vue"),
+        meta: {
+          pageTitle: "ป้ายประชาสัมพันธ์",
+          breadcrumbs: ["ป้ายประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/banner/manage/:id",
+        name: "Bannermanage",
+        component: () => import("@/views/banner/BannerManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขป้ายประชาสัมพันธ์",
+          breadcrumbs: ["แก้ไขป้ายประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/banner/create",
+        name: "Bannercreate",
+        component: () => import("@/views/banner/BannerManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มป้ายประชาสัมพันธ์",
+          breadcrumbs: ["เพิ่มป้ายประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/banner",
+        name: "banner",
+        component: () => import("@/views/banner/BannerList.vue"),
+        meta: {
+          pageTitle: "ป้ายประชาสัมพันธ์",
+          breadcrumbs: ["ป้ายประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/banner/manage/:id",
+        name: "Bannermanage",
+        component: () => import("@/views/banner/BannerManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขป้ายประชาสัมพันธ์",
+          breadcrumbs: ["แก้ไขป้ายประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/banner/create",
+        name: "Bannercreate",
+        component: () => import("@/views/banner/BannerManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มป้ายประชาสัมพันธ์",
+          breadcrumbs: ["เพิ่มป้ายประชาสัมพันธ์"],
+        },
+      }, {
+        path: "/group",
+        name: "group",
+        component: () => import("@/views/group/GroupList.vue"),
+        meta: {
+          pageTitle: "จัดการกลุ่ม",
+          breadcrumbs: ["จัดการกลุ่ม"],
+        },
+      },
+      {
+        path: "/group/manage/:id",
+        name: "Groupmanage",
+        component: () => import("@/views/group/GroupManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขกลุ่ม",
+          breadcrumbs: ["แก้ไขกลุ่ม"],
+        },
+      },
+      {
+        path: "/group/create",
+        name: "Groupcreate",
+        component: () => import("@/views/group/GroupManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มกลุ่ม",
+          breadcrumbs: ["เพิ่มกลุ่ม"],
+        },
+      },
+      {
+        path: "/news",
+        name: "news",
+        component: () => import("@/views/news/NewsList.vue"),
+        meta: {
+          pageTitle: "ข่าวประชาสัมพันธ์",
+          breadcrumbs: ["ข่าวประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/news/manage/:id",
+        name: "Newsmanage",
+        component: () => import("@/views/news/NewsManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขข่าวประชาสัมพันธ์",
+          breadcrumbs: ["แก้ไขข่าวประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/news/create",
+        name: "Newscreate",
+        component: () => import("@/views/news/NewsManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มข่าวประชาสัมพันธ์",
+          breadcrumbs: ["เพิ่มข่าวประชาสัมพันธ์"],
+        },
+      },
+      {
+        path: "/weblink",
+        name: "weblink",
+        component: () => import("@/views/weblink/WeblinkList.vue"),
+        meta: {
+          pageTitle: "จัดการบริการ",
+          breadcrumbs: ["จัดการบริการ"],
+        },
+      },
+      {
+        path: "/weblink/manage/:id",
+        name: "weblinkmanage",
+        component: () => import("@/views/weblink/WeblinkManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขบริการ",
+          breadcrumbs: ["แก้ไขบริการ"],
+        },
+      },
+      {
+        path: "/weblink/create",
+        name: "weblinkcreate",
+        component: () => import("@/views/weblink/WeblinkManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มบริการ",
+          breadcrumbs: ["เพิ่มบริการ"],
+        },
+      },
+      {
+        path: "/complaint",
+        name: "complaint",
+        component: () => import("@/views/complaint/ComplaintList.vue"),
+        meta: {
+          pageTitle: "ขอความช่วยเหลือ แจ้งเหตุ",
+          breadcrumbs: ["ขอความช่วยเหลือ แจ้งเหตุ"],
+        },
+      },
+      {
+        path: "/notice",
+        name: "notice",
+        component: () => import("@/views/notice/NoticeList.vue"),
+        meta: {
+          pageTitle: "แจ้งเตือน แจ้งเหตุ",
+          breadcrumbs: ["แจ้งเตือน แจ้งเหตุ"],
+        },
+      },
+      {
+        path: "/event",
+        name: "event",
+        component: () => import("@/views/event/EventList.vue"),
+        meta: {
+          pageTitle: "ปฏิทินกิจกรรม",
+          breadcrumbs: ["ปฏิทินกิจกรรม"],
+        },
+      },
+      {
+        path: "/service",
+        name: "service",
+        component: () => import("@/views/service/ServiceList.vue"),
+        meta: {
+          pageTitle: "จุดบริการ",
+          breadcrumbs: ["จุดบริการ"],
+        },
+      },
+      {
+        path: "/knowledge",
+        name: "knowledge",
+        component: () => import("@/views/knowledge/KnowledgeList.vue"),
+        meta: {
+          pageTitle: "คลังเนื้อหา",
+          breadcrumbs: ["คลังเนื้อหา"],
+        },
+      },
+      {
+        path: "/contact",
+        name: "contact",
+        component: () => import("@/views/contact/ContactList.vue"),
+        meta: {
+          pageTitle: "ข้อมูลติดต่อเรา",
+          breadcrumbs: ["ข้อมูลติดต่อเรา"],
+        },
+      },
+      {
+        path: "/category",
+        name: "category",
+        component: () => import("@/views/category/CategoryList.vue"),
+        meta: {
+          pageTitle: "หมวดหมู่ต่างๆ",
+          breadcrumbs: ["หมวดหมู่ต่างๆ"],
+        },
+      },
+      {
+        path: "/category/create/:type",
+        name: "category-create",
+        component: () => import("@/views/category/CategoryManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มหมวดหมู่",
+          breadcrumbs: ["เพิ่มหมวดหมู่"],
+        },
+      },
+      {
+        path: "/category/manage/:id",
+        name: "category-mreate",
+        component: () => import("@/views/category/CategoryManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขหมวดหมู่",
+          breadcrumbs: ["แก้ไขหมวดหมู่"],
         },
       },
       // {
@@ -513,7 +728,7 @@ router.beforeEach((to, from, next) => {
   store.commit(Mutations.RESET_LAYOUT_CONFIG);
 
   // verify auth token before each page change
-  // store.dispatch(Actions.VERIFY_AUTH, { api_token: JwtService.getToken() });
+  store.dispatch(Actions.VERIFY_AUTH, { "token": JwtService.getToken() });
 
   // before page access check if page requires authentication
   if (to.meta.middleware == "auth") {

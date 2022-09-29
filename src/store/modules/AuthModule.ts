@@ -3,6 +3,7 @@ import JwtService from "@/core/services/JwtService";
 import { Actions, Mutations } from "@/store/enums/StoreEnums";
 import { Module, Action, Mutation, VuexModule } from "vuex-module-decorators";
 import qs from "qs";
+import axios from "axios";
 export interface User {
   name: string;
   surname: string;
@@ -56,7 +57,16 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
   @Mutation
   [Mutations.SET_AUTH](user) {
     this.isAuthenticated = true;
-    localStorage.setItem("dataInfo",JSON.stringify(user))
+    localStorage.setItem("u_id", user.id)
+    localStorage.setItem("dataInfo", JSON.stringify(user))
+    if (user.role != null) {
+      if (user.role.adminGroups.length > 0) {
+      localStorage.setItem("groupId", user.role.adminGroups[0])
+      }
+      if (user.role.isSuperAdmin) {
+        localStorage.setItem("superAdmin", user.role.isSuperAdmin)
+      }
+    }
     this.user = user;
     this.errors = {};
     JwtService.saveToken(user.token);
@@ -95,7 +105,21 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
         console.log(error);
         this.context.commit(Mutations.SET_ERROR, ["เข้าสู่ระบบไม่สำเร็จ"]);
       });
-      /* eslint-disable */
+    /* eslint-disable */
+  }
+  @Action
+  [Actions.CLEARCACHE]() {
+    /* eslint-disable */
+    return axios.get("clearCache", {
+      headers: { token: localStorage.getItem("id_token") },
+    })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(({ error }) => {
+        console.log(error);
+      });
+    /* eslint-disable */
   }
   @Action
   [Actions.LOGOUT]() {
@@ -127,13 +151,21 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
   @Action
   [Actions.VERIFY_AUTH](payload) {
     if (JwtService.getToken()) {
-      ApiService.setHeader();
-      ApiService.post("verify_token", payload)
-        .then(({ data }) => {
-          this.context.commit(Mutations.SET_AUTH, data);
+      axios
+        .get(
+          process.env.VUE_APP_API_URL +
+          "/getUserAll" +
+          "?sizeContents=9999&page=0&role=",
+          {
+            headers: payload,
+          }
+        )
+        .then((response) => {
+          console.log(response);
         })
-        .catch(({ response }) => {
-          this.context.commit(Mutations.SET_ERROR, response.data.errors);
+        .catch((error) => {
+          console.log(error);
+          this.context.commit(Mutations.SET_ERROR, "เซสชั่นหมดอายุ");
           this.context.commit(Mutations.PURGE_AUTH);
         });
     } else {

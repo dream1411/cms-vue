@@ -13,6 +13,73 @@ const DocMenuConfig = [
         svgIcon: "media/svg/icons/Design/User.svg",
         fontIcon: "bi-app-indicator",
       },
+      {
+        heading: "ป้ายประชาสัมพันธ์",
+        route: "/banner",
+        svgIcon: "media/svg/icons/Design/Banner.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "จัดการกลุ่ม",
+        route: "/group",
+        svgIcon: "media/svg/icons/Design/Group.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "ข่าวประชาสัมพันธ์",
+        route: "/news",
+        svgIcon: "media/svg/icons/Design/News.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "บริการ",
+        route: "/weblink",
+        svgIcon: "media/svg/icons/Design/Chat2.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "ขอความช่วยเหลือ แจ้งเหตุ",
+        route: "/complaint",
+        svgIcon: "media/svg/icons/Design/Sending mail.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      
+      {
+        heading: "แจ้งเตือน แจ้งเหตุ",
+        route: "/notice",
+        svgIcon: "media/svg/icons/Design/Outgoing-call.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "ปฏิทินกิจกรรม",
+        route: "/event",
+        svgIcon: "media/svg/icons/Design/Calendar.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "จุดบริการ.",
+        route: "/service",
+        svgIcon: "media/svg/icons/Design/Marker1.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "คลังเนื้อหา",
+        route: "/knowledge",
+        svgIcon: "media/svg/icons/Design/Book.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "ติดต่อเรา",
+        route: "/contact",
+        svgIcon: "media/svg/icons/Design/Call1.svg",
+        fontIcon: "bi-app-indicator",
+      },
+      {
+        heading: "หมวดหมู่ต่างๆ",
+        route: "/category",
+        svgIcon: "media/svg/icons/Design/Layout-left-panel-2.svg",
+        fontIcon: "bi-app-indicator",
+      },
       // {
       //   heading: "layoutBuilder",
       //   route: "/builder",
