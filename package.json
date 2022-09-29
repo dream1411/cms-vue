@@ -19,7 +19,7 @@
     "@popperjs/core": "2.11.5",
     "@tinymce/tinymce-vue": "^4.0.4",
     "@types/object-path": "^0.11.0",
-    "@uppy/core": "github:github_dream1411/cms-vue/node_modules/@uppy/core",
+    "@uppy/core": "git+ssh://git@github.com/dream1411/cms-vue/tree/main/node_modules/@uppy",
     "@uppy/dashboard": "^3.0.1",
     "@uppy/drag-drop": "^3.0.0",
     "@uppy/image-editor": "^2.0.0",
