@@ -104,7 +104,14 @@
         data-kt-menu-attach="parent"
         data-kt-menu-placement="bottom-end"
       >
-        <img :src="profile.imageProfile != null ? imageUrl + profile.imageProfile:'media/avatars/blank.png'" alt="user" />
+        <img
+          :src="
+            profile.imageProfile != null
+              ? imageUrl + profile.imageProfile
+              : 'media/avatars/blank.png'
+          "
+          alt="user" style="object-fit: cover;"
+        />
       </div>
       <KTUserMenu />
       <!--end::Menu wrapper-->
@@ -153,7 +160,11 @@ export default defineComponent({
       imageUrl: process.env.VUE_APP_API_URL_IMAGE,
     };
   },
-
+ watch: {
+    $route(to, from) {
+      this.profile = JSON.parse(localStorage.getItem("dataInfo"))
+    },
+  },
   setup() {
     const router = useRouter();
     const store = useStore();

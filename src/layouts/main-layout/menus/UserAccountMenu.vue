@@ -9,7 +9,7 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" :src="profile.imageProfile != null ? imageUrl + profile.imageProfile:'media/avatars/blank.png'" />
+          <img alt="Logo" :src="profile.imageProfile != null ? imageUrl + profile.imageProfile:'media/avatars/blank.png'" style="object-fit: cover;"/>
         </div>
         <!--end::Avatar-->
 
@@ -308,11 +308,15 @@ export default defineComponent({
   data() {
     return {
       profile: localStorage.getItem("dataInfo")
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         ? JSON.parse(localStorage.getItem("dataInfo")!)
         : null,
       imageUrl: process.env.VUE_APP_API_URL_IMAGE,
     };
+  },
+   watch: {
+    $route(to, from) {
+      this.profile = JSON.parse(localStorage.getItem("dataInfo")!);
+    },
   },
   setup() {
     const router = useRouter();

@@ -203,7 +203,11 @@
                     >สมาชิกกลุ่ม</label
                   >
                   <div class="col-9">
-                    <Multiselect v-model="dataGroup.value" v-bind="dataGroup">
+                    <Multiselect
+                      v-model="dataGroup.value"
+                      v-bind="dataGroup"
+                      @change="groupChange"
+                    >
                       <template
                         v-slot:tag="{ option, handleTagRemove, disabled }"
                       >
@@ -225,6 +229,9 @@
                         {{ option.name }}
                       </template>
                     </Multiselect>
+                    <!-- my: {{ myGroup }} add:{{ addGroup }} remove:{{
+                      removeGroup
+                    }} -->
                   </div>
                 </div>
               </div>
@@ -316,17 +323,19 @@
   </form>
 </template>
 <script>
-import { watch, ref, onMounted } from "vue";
-import { Actions } from "@/store/enums/StoreEnums";
+import { ref } from "vue";
 import MainMenuConfig from "@/core/config/MainMenuConfig";
 import axios from "axios";
 import jQuery from "jquery";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 const $ = jQuery;
 const Menu = MainMenuConfig;
-const UserInfo = localStorage.getItem("dataInfo");
-import { useRoute } from "vue-router";
 import Multiselect from "@vueform/multiselect";
+import Swal from "sweetalert2/dist/sweetalert2.min.js";
+import router from "@/router";
+const addGroup = ref([]);
+const myGroup = ref([]);
+const removeGroup = ref([]);
 const dataGroup = ref({
   mode: "tags",
   value: [],
@@ -339,7 +348,7 @@ const dataGroup = ref({
 export default {
   components: {
     Multiselect,
-    KTPageTitle
+    KTPageTitle,
   },
   name: "UsersManage",
   data() {
@@ -348,7 +357,7 @@ export default {
       district: null,
       subDistrict: null,
       userType: null,
-      urldata: null,
+      urldata: this.$route.params.id,
       groupList: [],
       profile: {
         userName: "",
@@ -373,61 +382,31 @@ export default {
     };
   },
   setup() {
-    const route = useRoute();
-    watch(
-      () => route.path,
-      () => {
-        if (route.params.id == localStorage.getItem("u_id")) {
-          window.location.reload();
-        }
-      }
-    );
+    // const route = useRoute();
+    // watch(
+    //   () => route.path,
+    //   () => {
+    //     if (route.params.id == localStorage.getItem("u_id")) {
+    //     this.profile = []
+    //     }
+    //   }
+    // );
     return {
       dataGroup,
+      addGroup,
+      removeGroup,
+      myGroup,
     };
+  },
+  watch: {
+    $route(to, from) {
+      if (to.params && to.params.id) {
+        this.getProfile(to.params.id);
+      }
+    },
   },
   async mounted() {
     this.Menu = Menu[0].pages;
-    this.urldata = this.$route.params.id;
-    if (this.urldata != null) {
-      const response = await axios.get(
-        process.env.VUE_APP_API_URL + "/getProfile" + "?id=" + this.urldata,
-        {
-          headers: { token: localStorage.getItem("id_token") },
-        }
-      );
-      console.log(response.data.data);
-      this.profile = response.data.data;
-      if (this.profile.role != null) {
-        this.profile.admingroup = this.profile.role.adminGroups[0];
-      }
-      // if (this.profile.addressProfile != null) {
-      //   this.addressProfile.address = this.profile.addressProfile.addressNo;
-      //   this.addressProfile.provinceCode =
-      //     this.profile.addressProfile.province_code;
-      //   this.addressProfile.districtCode =
-      //     this.profile.addressProfile.district_code;
-      //   this.addressProfile.subDistrictCode =
-      //     this.profile.addressProfile.subDistrict_code;
-      //   this.addressProfile.postCode = this.profile.addressProfile.zipcode;
-      // }
-      if (this.profile.imageProfile != null) {
-        if (this.profile.imageProfile.indexOf("https") > -1) {
-          console.log(this.profile.imageProfile);
-        } else {
-          this.profile.imageProfile =
-            process.env.VUE_APP_API_URL_IMAGE + this.profile.imageProfile;
-        }
-      }
-      this.setPermissionMenu(this.profile.permissionMenu);
-      if (this.profile.readGroups.length > 0) {
-        let readGroups = [];
-        for (const loopdata of this.profile.readGroups) {
-          readGroups.push(loopdata.groupId);
-        }
-        dataGroup.value.value = readGroups;
-      }
-    }
     const group = await axios.get(process.env.VUE_APP_API_URL + "/getGroup");
     this.groupList = group.data.data;
     if (this.groupList.length > 0) {
@@ -442,7 +421,9 @@ export default {
         });
       }
     }
-
+    if (this.urldata != null) {
+      this.getProfile(this.urldata);
+    }
     // const getProvince = await axios.get(
     //   process.env.VUE_APP_API_URL + "/getProvince"
     // );
@@ -455,6 +436,37 @@ export default {
     // }
   },
   methods: {
+    async getProfile(id) {
+      const response = await axios.get(
+        process.env.VUE_APP_API_URL + "/getProfile" + "?id=" + id,
+        {
+          headers: { token: localStorage.getItem("id_token") },
+        }
+      );
+      console.log(response.data.data);
+      this.profile = response.data.data;
+      if (this.profile.role != null) {
+        this.profile.admingroup = this.profile.role.adminGroups[0];
+      }
+      if (this.profile.imageProfile != null) {
+        if (this.profile.imageProfile.indexOf("https") > -1) {
+          console.log(this.profile.imageProfile);
+        } else {
+          this.profile.imageProfile =
+            process.env.VUE_APP_API_URL_IMAGE + this.profile.imageProfile;
+        }
+      }
+      this.setPermissionMenu(this.profile.permissionMenu);
+      if (this.profile.readGroups.length > 0) {
+        let readGroups = [];
+        for (const loopdata of this.profile.readGroups) {
+          readGroups.push(loopdata.groupId);
+        }
+        console.log(readGroups);
+        myGroup.value = readGroups;
+        dataGroup.value.value = readGroups;
+      }
+    },
     async callDistrict(event) {
       const getDistrict = await axios.get(
         process.env.VUE_APP_API_URL + "/getDistrict" + "?provinceCode=" + event
@@ -487,6 +499,23 @@ export default {
       this.file = event.target.files[0];
       this.profile.imageProfile = URL.createObjectURL(this.file);
     },
+    groupChange(event) {
+      console.log(event);
+      let listadd = [];
+      for (const loopdata of event) {
+        if (myGroup.value.indexOf(loopdata) == -1) {
+          listadd.push(loopdata);
+        }
+      }
+      addGroup.value = listadd;
+      let listremove = [];
+      for (const loopdata of myGroup.value) {
+        if (event.indexOf(loopdata) == -1) {
+          listremove.push(loopdata);
+        }
+      }
+      removeGroup.value = listremove;
+    },
     handleUpformdate() {
       let formData = new FormData();
       formData.append("firstName", this.profile.firstName);
@@ -494,7 +523,12 @@ export default {
       formData.append("phoneNumber", this.profile.phoneNumber);
       formData.append("email", this.profile.email);
       formData.append("permissionMenu", this.profile.permissionMenu);
-      formData.append("groupId", dataGroup.value.value.toString());
+      if (addGroup.value.length > 0) {
+        formData.append("groupId", addGroup.value.toString());
+      }
+      if (removeGroup.value.length > 0) {
+        formData.append("groupIdDelete", removeGroup.value.toString());
+      }
       if (this.urldata != null) {
         formData.append("id", this.profile.id);
         if (this.file != null) {
@@ -557,31 +591,62 @@ export default {
                               "dataInfo",
                               JSON.stringify(res.data.data)
                             );
-                            this.$store.dispatch(Actions.CLEARCACHE);
-                            localStorage.setItem("reload", true);
-                            setTimeout(() => {
-                              if (localStorage.getItem("reload") != null) {
-                                localStorage.removeItem("reload");
-                                window.location.reload();
-                              }
-                            }, 500);
                           }
-                          this.$router.go(-1);
+                          Swal.fire({
+                            title: "บันทึกรายการสำเร็จ",
+                            text: "รายการข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "ตกลง!",
+                            customClass: {
+                              confirmButton:
+                                "btn fw-semobold btn-light-primary",
+                            },
+                          }).then(function () {
+                            router.go(-1);
+                          });
                         })
                         .catch((error) => {
                           console.log(error);
                         });
                     })
                     .catch((error) => {
-                      console.log(error);
+                      Swal.fire({
+                        title: "แจ้งเตือนข้อผิดพลาด",
+                        text: error.response.data.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                        customClass: {
+                          confirmButton: "btn fw-semobold btn-light-danger",
+                        },
+                      });
                     });
                 })
                 .catch((error) => {
-                  console.log(error);
+                  Swal.fire({
+                    title: "แจ้งเตือนข้อผิดพลาด",
+                    text: error.response.data.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                    customClass: {
+                      confirmButton: "btn fw-semobold btn-light-danger",
+                    },
+                  });
                 });
             })
             .catch((error) => {
-              console.log(error);
+              Swal.fire({
+                title: "แจ้งเตือนข้อผิดพลาด",
+                text: error.response.data.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                customClass: {
+                  confirmButton: "btn fw-semobold btn-light-danger",
+                },
+              });
             });
         } else {
           axios
@@ -630,28 +695,57 @@ export default {
                           "dataInfo",
                           JSON.stringify(res.data.data)
                         );
-                        localStorage.setItem("reload", true);
-                        this.$store.dispatch(Actions.CLEARCACHE);
-                        setTimeout(() => {
-                          if (localStorage.getItem("reload") != null) {
-                            localStorage.removeItem("reload");
-                            window.location.reload();
-                          }
-                        }, 500);
+                        Swal.fire({
+                          title: "บันทึกรายการสำเร็จ",
+                          text: "รายการข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
+                          icon: "success",
+                          buttonsStyling: false,
+                          confirmButtonText: "ตกลง!",
+                          customClass: {
+                            confirmButton: "btn fw-semobold btn-light-primary",
+                          },
+                        }).then(function () {
+                          router.go(-1);
+                        });
                       }
                     })
                     .catch((error) => {
-                      console.log(error);
+                      Swal.fire({
+                        title: "แจ้งเตือนข้อผิดพลาด",
+                        text: error.response.data.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                        customClass: {
+                          confirmButton: "btn fw-semobold btn-light-danger",
+                        },
+                      });
                     });
                 })
                 .catch((error) => {
-                  console.log(error);
+                  Swal.fire({
+                    title: "แจ้งเตือนข้อผิดพลาด",
+                    text: error.response.data.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                    customClass: {
+                      confirmButton: "btn fw-semobold btn-light-danger",
+                    },
+                  });
                 });
-
-              this.$router.go(-1);
             })
             .catch((error) => {
-              console.log(error);
+              Swal.fire({
+                title: "แจ้งเตือนข้อผิดพลาด",
+                text: error.response.data.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "กรุณาลองใหม่ภายหลัง!",
+                customClass: {
+                  confirmButton: "btn fw-semobold btn-light-danger",
+                },
+              });
             });
         }
       } else {
@@ -711,7 +805,7 @@ export default {
                           }
                         )
                         .then((res) => {
-                          this.$store.dispatch(Actions.CLEARCACHE);
+                          // this.$store.dispatch(Actions.CLEARCACHE);
                           this.$router.go(-1);
                         })
                         .catch((error) => {
@@ -771,7 +865,7 @@ export default {
                       }
                     )
                     .then((res) => {
-                      this.$store.dispatch(Actions.CLEARCACHE);
+                      // this.$store.dispatch(Actions.CLEARCACHE);
                       this.$router.go(-1);
                     })
                     .catch((error) => {

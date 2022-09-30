@@ -374,7 +374,6 @@ const deletePictures = [];
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import { Dashboard } from "@uppy/vue";
-import ThumbnailGenerator from "@uppy/thumbnail-generator";
 import Uppy from "@uppy/core";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 import * as Yup from "yup";
@@ -384,13 +383,6 @@ const uppy = new Uppy({
   restrictions: {
     allowedFileTypes: ["image/*"],
   },
-});
-uppy.use(ThumbnailGenerator, {
-  id: "ThumbnailGenerator",
-  thumbnailWidth: 200,
-  thumbnailHeight: 200,
-  thumbnailType: "image/jpeg",
-  waitForThumbnailsBeforeUpload: false,
 });
 export default {
   components: {
@@ -418,12 +410,11 @@ export default {
       title: Yup.string().required("กรุณาระบุ หัวข้อ"),
       // password: Yup.string().min(4).required().label("Password"),
     });
-    onMounted(() => 
-    {
+    onMounted(() => {
       console.log(uppy.getFiles());
-      if (uppy.getFiles().length>0) {
+      if (uppy.getFiles().length > 0) {
         for (const loopclear of uppy.getFiles()) {
-          uppy.removeFile(loopclear.id)
+          uppy.removeFile(loopclear.id);
         }
       }
       axios
@@ -448,7 +439,6 @@ export default {
           console.log(error);
         });
       if (router.params.id) {
-        
         axios
           .get(
             process.env.VUE_APP_API_URL +
@@ -476,14 +466,31 @@ export default {
             }
             if (news.value.picturesPath.length > 0) {
               for (let loopPicturesPath of news.value.picturesPath) {
-                uppy.addFile({
-                  name: loopPicturesPath, // image name
-                  type: "image/jpeg",
-                  data: "null",
-                  source: process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath,
-                  remote: true,
-                });
+                let picturesPath =
+                  process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath;
+                let imageFileAsBase64String = getBase64FromUrl(picturesPath);
+                // picturesPath = window.URL.createObjectURL(new Blob([picturesPath]))
+                console.log(picturesPath);
+                fetch(`data:image/jpeg;base64,${imageFileAsBase64String}`)
+                  .then((response) => response.blob())
+                  .then((blob) => {
+                    uppy.addFile({
+                      name: "loopPicturesPath",
+                      type: "image/jpeg",
+                      data: blob,
+                      source: "edit",
+                    });
+                  });
+                // uppy.addFile({
+                //   name: loopPicturesPath, // image name
+                //   type: "image/jpeg",
+                //   data: "null",
+                //   source: process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath,
+                //   remote: true,
+                // });
+                //  uppy.setFileState(loopPicturesPath, { picturesPath });
               }
+
               console.log(news.value);
             }
             let categoryLiist = [];
@@ -537,7 +544,23 @@ export default {
       console.log("state: ", state);
       console.log("node: ", node);
     };
-
+    const getBase64FromUrl = async (url) => {
+      const data = await fetch(url, {
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      const blob = await data.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          const base64data = reader.result;
+          resolve(base64data);
+        };
+      });
+    };
     const onUpdate = (nodes) => {
       //  category.value= []
       if (nodes.length > 0) {
@@ -571,7 +594,6 @@ export default {
       // this.news.category = category.value;
       // console.log(category.value);
     };
-
     const onNodeClick = (node) => {
       node.checked = node[0].checked;
     };
@@ -632,7 +654,7 @@ export default {
             "click",
             ".uppy-Dashboard-Item-previewImg",
             function (event) {
-              $("#btn-preview").click()
+              $("#btn-preview").click();
               $("#image-preview").attr("src", event.target.currentSrc);
             }
           );

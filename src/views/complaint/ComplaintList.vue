@@ -156,7 +156,9 @@
           }}
         </template>
         <template v-slot:comment="{ row: tableData }">
-           <div class="badge badge-light-warning fw-bold"> {{ tableData.comment}}</div>
+          <div class="badge badge-light-warning fw-bold">
+            {{ tableData.comment }}
+          </div>
         </template>
         <template v-slot:status="{ row: tableData }">
           <div
@@ -481,6 +483,10 @@ export default defineComponent({
       let page = 0;
       let startDate = "";
       let endDate = "";
+      let groupId:any = "";
+      if (localStorage.getItem("groupId")) {
+        groupId = localStorage.getItem("groupId");
+      }
       // let role = "";
       if (pages.value != undefined) {
         page = pages.value - 1;
@@ -510,7 +516,9 @@ export default defineComponent({
             "&endDate=" +
             endDate +
             "&keyWord=" +
-            keyWord,
+            keyWord +
+            "&groupId=" +
+            groupId,
           {
             headers: { token: localStorage.getItem("id_token") },
           }
@@ -639,7 +647,6 @@ export default defineComponent({
       txt += data.categoryName;
       return txt;
     },
-   
   },
 });
 </script>

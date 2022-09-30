@@ -140,6 +140,7 @@
                 "
                 @error="setAltImg"
                 alt=""
+                style="object-fit: cover;"
               />
             </div>
             <div class="p-2">
