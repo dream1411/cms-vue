@@ -31,7 +31,7 @@
             <template v-if="menuItem.heading">
               <div class="menu-item">
                 <router-link
-                  class="menu-link"
+                  :class="(route.path.indexOf(menuItem.route)>-1)== true ? 'menu-link active': 'menu-link'"
                   active-class="active"
                   :to="menuItem.route"
                 >
@@ -52,8 +52,8 @@
                     </span>
                   </span>
                   <span class="menu-title">{{
-                    translate(menuItem.heading)
-                  }}</span>
+                    translate(menuItem.heading) 
+                  }} </span>
                 </router-link>
               </div>
             </template>
@@ -218,7 +218,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref,watch } from "vue";
 import { useRoute } from "vue-router";
 import MainMenuConfig from "@/core/config/MainMenuConfig";
 import { sidebarMenuIcons } from "@/core/helpers/config";
@@ -231,7 +231,6 @@ export default defineComponent({
     const { t, te } = useI18n();
     const route = useRoute();
     const scrollElRef = (ref < null) | (HTMLElement > null);
-
     onMounted(() => {
       if (scrollElRef.value) {
         scrollElRef.value.scrollTop = 0;
@@ -252,6 +251,7 @@ export default defineComponent({
 
     return {
       hasActiveChildren,
+      route,
       MainMenuConfig,
       sidebarMenuIcons,
       translate,

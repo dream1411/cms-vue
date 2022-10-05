@@ -68,7 +68,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="deleteFewCustomers()"
+            @click="deleteFewTable()"
           >
             Delete Selected
           </button>
@@ -152,7 +152,7 @@
             </div>
             
             <div class="menu-item px-3">
-              <a @click="deleteCustomer(customer.id)" class="menu-link px-3"
+              <a @click="deleteTable(customer.id)" class="menu-link px-3"
                 >Delete</a
               >
             </div>
@@ -231,14 +231,14 @@ export default defineComponent({
       initCustomers.value.splice(0, tableData.value.length, ...tableData.value);
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       // selectedIds.value.forEach((item) => {
-      //   deleteCustomer(item);
+      //   deleteTable(item);
       // });
       // selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       // for (let i = 0; i < tableData.value.length; i++) {
       //   if (tableData.value[i].id === id) {
       //     tableData.value.splice(i, 1);
@@ -284,11 +284,11 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
     };

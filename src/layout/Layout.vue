@@ -146,17 +146,15 @@ export default defineComponent({
         if (!store.getters.isUserAuthenticated) {
           router.push({ name: "sign-in" });
         }
-        const response = axios.get(
-          process.env.VUE_APP_API_URL +
-            "/getProfile" +
-            "?id=" +
-            route.params.id,
-          {
-            headers: { token: localStorage.getItem("id_token") },
-          }
-        );
-        console.log(response);
-
+        // const response = axios.get(
+        //   process.env.VUE_APP_API_URL +
+        //     "/getProfile" +
+        //     "?id=" +
+        //     route.params.id,
+        //   {
+        //     headers: { token: localStorage.getItem("id_token") },
+        //   }
+        // );
         removeModalBackdrop();
       }
     );

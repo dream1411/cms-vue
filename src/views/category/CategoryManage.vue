@@ -208,7 +208,6 @@ export default {
     };
   },
   async mounted() {
-    console.log(this.$route.params.type);
     let groupId = "";
     if (localStorage.getItem("groupId") != null) {
       groupId = localStorage.getItem("groupId");
@@ -224,7 +223,6 @@ export default {
           headers: { token: localStorage.getItem("id_token") },
         }
       );
-      console.log(response.data.data);
       this.category = response.data.data;
       if (
         this.category.categoryImage != null &&
@@ -253,7 +251,6 @@ export default {
         )
         .then(({ data }) => {
           this.categoryList = data.data;
-          console.log(this.categoryList);
         })
         .catch(({ error }) => {
           console.log(error);
@@ -273,7 +270,6 @@ export default {
         )
         .then(({ data }) => {
           this.categoryList = data.data;
-          console.log(this.categoryList);
         })
         .catch(({ error }) => {
           console.log(error);
@@ -303,7 +299,6 @@ export default {
             headers: { token: localStorage.getItem("id_token") },
           })
           .then((res) => {
-            console.log(res.data);
             // this.$store.dispatch(Actions.CLEARCACHE);
             Swal.fire({
               title: "บันทึกรายการสำเร็จ",

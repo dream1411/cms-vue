@@ -30,7 +30,7 @@
   <KTDrawers />
   <KTScrollTop />
   <KTModals />
-  <KTCustomize />
+  <!-- <KTCustomize /> -->
 </template>
 
 <script lang="ts">
@@ -65,7 +65,7 @@ export default defineComponent({
     KTDrawers,
     KTScrollTop,
     KTModals,
-    KTCustomize,
+    // KTCustomize,
   },
   setup() {
     const route = useRoute();

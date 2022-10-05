@@ -69,7 +69,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="deleteFewCustomers()"
+            @click="deleteFewTable()"
           >
             ลบกลุ่ม
           </button>
@@ -172,7 +172,7 @@
                 >
               </li>
               <li>
-                <a @click="deleteCustomer(tableData.id)" class="dropdown-item"
+                <a @click="deleteTable(tableData.id)" class="dropdown-item"
                   >ลบ</a
                 >
               </li>
@@ -202,7 +202,7 @@
        
             <div class="menu-item px-3">
                 {{tableData.id}}
-              <a @click="deleteCustomer(tableData.id)" class="menu-link px-3"
+              <a @click="deleteTable(tableData.id)" class="menu-link px-3"
                 >Delete</a
               >
             </div>
@@ -289,7 +289,6 @@ export default defineComponent({
         )
         .then((response) => {
           tableData.value = response.data.data;
-          console.log(tableData);
           initCustomers.value.splice(
             0,
             tableData.value.length,
@@ -299,19 +298,17 @@ export default defineComponent({
         .catch((error) => {
           console.log(error);
         });
-      //   console.log(response["data"]["data"]["content"]);
-
       /* eslint-disable */
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       selectedIds.value.forEach((item) => {
-        deleteCustomer(item);
+        deleteTable(item);
       });
       selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
         if (tableData.value[i]["id"] === id) {
           let formData = new FormData();
@@ -378,18 +375,17 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
     };
   },
   methods: {
     checkImage(imageProfile) {
-      console.log(imageProfile);
       if (imageProfile.indexOf("http") > -1) {
         return imageProfile;
       } else {
@@ -412,11 +408,7 @@ export default defineComponent({
       var startDate = new Date(date);
       var endDate = new Date();
       let difference = endDate.getTime() - startDate.getTime();
-      console.log(difference);
-      // let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-      // console.log(TotalDays + " วัน");
       let time = Math.abs(difference);
-      // Define humanTime and units
       var humanTime, units;
 
       // If there are years

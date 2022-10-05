@@ -123,14 +123,9 @@
             >
               <li>
                 <router-link
-                  :to="'/service/manage/' + tableData.id"
+                  :to="'/contact/manage/' + tableData.id"
                   class="dropdown-item"
                   >แก้ไข</router-link
-                >
-              </li>
-              <li>
-                <a @click="deleteCustomer(tableData.id)" class="dropdown-item"
-                  >ลบ</a
                 >
               </li>
             </ul>
@@ -138,105 +133,6 @@
         </template>
       </Datatable>
     </div>
-  </div>
-  <div class="modal fade" id="kt_filter_modal" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-      <!--begin::Modal content-->
-      <div class="modal-content">
-        <!--begin::Modal header-->
-        <div class="modal-header">
-          <!--begin::Modal title-->
-          <h2 class="fw-bold">ตัวกรอง</h2>
-          <!--end::Modal title-->
-
-          <!--begin::Close-->
-          <div
-            id="kt_filter_modal_close"
-            data-bs-dismiss="modal"
-            class="btn btn-icon btn-sm btn-active-icon-primary"
-          >
-            <span class="svg-icon svg-icon-1">
-              <inline-svg src="media/icons/duotune/arrows/arr061.svg" />
-            </span>
-          </div>
-          <!--end::Close-->
-        </div>
-        <!--end::Modal header-->
-
-        <!--begin::Modal body-->
-        <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-          <!--begin::Form-->
-          <el-form @submit.prevent="filter()" :model="formData">
-            <!--begin::Input group-->
-            <div class="fv-row mb-10">
-              <!--begin::Label-->
-              <label class="fs-5 fw-semobold form-label mb-5"
-                >วันที่สร้างเริ่มต้น - สิ้นสุด:</label
-              >
-              <!--end::Label-->
-
-              <!--begin::Input-->
-              <el-form-item prop="name">
-                <el-date-picker
-                  type="daterange"
-                  v-model="formData.dateRange"
-                  format="DD/MM/YYYY"
-                  value-format="YYYY-MM-DD"
-                >
-                </el-date-picker>
-              </el-form-item>
-              <!--end::Input-->
-            </div>
-            <!-- <div class="fv-row mb-10">
-              <label class="fs-5 fw-semobold form-label mb-5"
-                >สิทธิการใช้งาน:</label
-              >
-
-              <select class="form-control" v-model="formData.role">
-                <option value="1" key="admin" label="admin" />
-                <option value="2" key="user" label="user" />
-              </select>
-            </div> -->
-
-            <div class="text-center">
-              <button
-                type="reset"
-                data-bs-dismiss="modal"
-                class="btn btn-light me-3"
-              >
-                ปิด
-              </button>
-              <!--begin::Button-->
-              <button
-                :data-kt-indicator="loading ? 'on' : null"
-                type="submit"
-                class="btn btn-lg btn-primary"
-              >
-                <span v-if="!loading" class="indicator-label">
-                  ค้นหา
-                  <span class="svg-icon svg-icon-3 ms-2 me-0">
-                    <inline-svg src="media/icons/duotune/arrows/arr064.svg" />
-                  </span>
-                </span>
-                <span v-if="loading" class="indicator-progress">
-                  กรุณารอสักครู่...
-                  <span
-                    class="spinner-border spinner-border-sm align-middle ms-2"
-                  ></span>
-                </span>
-              </button>
-              <!--end::Button-->
-            </div>
-            <!--end::Actions-->
-          </el-form>
-          <!--end::Form-->
-        </div>
-        <!--end::Modal body-->
-      </div>
-      <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
   </div>
 </template>
 
@@ -314,30 +210,16 @@ export default defineComponent({
       /* eslint-disable */
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       selectedIds.value.forEach((item) => {
-        deleteCustomer(item);
+        deleteTable(item);
       });
       selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
-        if (tableData.value[i]["id"] === id) {
-          console.log(id);
-          axios
-            .delete(process.env.VUE_APP_API_URL + "/deleteUser?id=" + id, {
-              headers: { token: localStorage.getItem("id_token") },
-            })
-            .then((res) => {
-              tableData.value.splice(i, 1);
-              store.dispatch(Actions.CLEARCACHE);
-              console.log(res);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
+      
       }
     };
     const search = ref<string>("");
@@ -418,11 +300,11 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
       pageChange,
@@ -465,9 +347,7 @@ export default defineComponent({
       var startDate = new Date(date);
       var endDate = new Date();
       let difference = endDate.getTime() - startDate.getTime();
-      console.log(difference);
       // let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-      // console.log(TotalDays + " วัน");
       let time = Math.abs(difference);
       // Define humanTime and units
       var humanTime, units;
@@ -524,9 +404,9 @@ export default defineComponent({
       for (let index = 0; index < data.categoryProfile.length; index++) {
         const loopCate = data.categoryProfile[index];
         if (index != data.categoryProfile.length - 1) {
-          txt += loopCate[0].data + ", ";
+          txt += loopCate + ", ";
         } else {
-          txt += loopCate[0].data;
+          txt += loopCate;
         }
       }
       return txt;

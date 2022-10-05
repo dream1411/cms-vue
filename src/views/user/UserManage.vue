@@ -344,6 +344,7 @@ const dataGroup = ref({
   trackBy: "name",
   label: "name",
   options: [],
+  searchable: true,
 });
 export default {
   components: {
@@ -407,6 +408,7 @@ export default {
   },
   async mounted() {
     this.Menu = Menu[0].pages;
+    dataGroup.value.options=[]
     const group = await axios.get(process.env.VUE_APP_API_URL + "/getGroup");
     this.groupList = group.data.data;
     if (this.groupList.length > 0) {
@@ -443,7 +445,6 @@ export default {
           headers: { token: localStorage.getItem("id_token") },
         }
       );
-      console.log(response.data.data);
       this.profile = response.data.data;
       if (this.profile.role != null) {
         this.profile.admingroup = this.profile.role.adminGroups[0];
@@ -462,7 +463,6 @@ export default {
         for (const loopdata of this.profile.readGroups) {
           readGroups.push(loopdata.groupId);
         }
-        console.log(readGroups);
         myGroup.value = readGroups;
         dataGroup.value.value = readGroups;
       }
@@ -471,7 +471,6 @@ export default {
       const getDistrict = await axios.get(
         process.env.VUE_APP_API_URL + "/getDistrict" + "?provinceCode=" + event
       );
-      console.log(getDistrict.data);
       this.district = getDistrict.data.data;
     },
     async callSubDistrict(event) {
@@ -483,7 +482,6 @@ export default {
           "&districtCode=" +
           event
       );
-      console.log(getSubDistrict.data);
       this.subDistrict = getSubDistrict.data.data;
     },
     async callPost(event) {
@@ -586,7 +584,6 @@ export default {
                         )
                         .then((res) => {
                           if (this.urldata == localStorage.getItem("u_id")) {
-                            console.log(res.data.data);
                             localStorage.setItem(
                               "dataInfo",
                               JSON.stringify(res.data.data)
@@ -654,7 +651,6 @@ export default {
               headers: { token: localStorage.getItem("id_token") },
             })
             .then((res) => {
-              console.log(res.data);
               let manageStatusUser = new FormData();
               manageStatusUser.append("id", res.data.data.id);
               manageStatusUser.append("status", this.profile.enable);
@@ -690,12 +686,12 @@ export default {
                     )
                     .then((res) => {
                       if (this.urldata == localStorage.getItem("u_id")) {
-                        console.log(res.data.data);
                         localStorage.setItem(
                           "dataInfo",
                           JSON.stringify(res.data.data)
                         );
-                        Swal.fire({
+                      }
+                       Swal.fire({
                           title: "บันทึกรายการสำเร็จ",
                           text: "รายการข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
                           icon: "success",
@@ -707,7 +703,6 @@ export default {
                         }).then(function () {
                           router.go(-1);
                         });
-                      }
                     })
                     .catch((error) => {
                       Swal.fire({
@@ -769,7 +764,6 @@ export default {
                   headers: { token: localStorage.getItem("id_token") },
                 })
                 .then((res) => {
-                  console.log(res.data);
                   let manageStatusUser = new FormData();
                   manageStatusUser.append("id", res.data.data.id);
                   manageStatusUser.append("status", this.profile.enable);
@@ -896,7 +890,6 @@ export default {
           }
         }
         this.profile.permissionMenu = list.toString();
-        console.log(this.profile.permissionMenu);
       });
     },
     setPermissionMenu(data) {

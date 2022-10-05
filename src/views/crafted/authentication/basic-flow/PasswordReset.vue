@@ -11,12 +11,12 @@
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
-        <h1 class="text-dark mb-3">Forgot Password ?</h1>
+        <h1 class="text-dark mb-3">ลืมรหัสผ่าน ?</h1>
         <!--end::Title-->
 
         <!--begin::Link-->
         <div class="text-gray-400 fw-semobold fs-4">
-          Enter your email to reset your password.
+         กรุณากรอกอีเมลเพื่อรีเช็ตระหัสผ่าน !
         </div>
         <!--end::Link-->
       </div>
@@ -24,7 +24,7 @@
 
       <!--begin::Input group-->
       <div class="fv-row mb-10">
-        <label class="form-label fw-bold text-gray-900 fs-6">Email</label>
+        <label class="form-label fw-bold text-gray-900 fs-6">อีเมล</label>
         <Field
           class="form-control form-control-solid"
           type="email"
@@ -48,17 +48,17 @@
           id="kt_password_reset_submit"
           class="btn btn-lg btn-primary fw-bold me-4"
         >
-          <span class="indicator-label"> Submit </span>
+          <span class="indicator-label"> ส่งข้อมูล </span>
           <span class="indicator-progress">
-            Please wait...
+            รอสักครู่...
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
           </span>
         </button>
 
-        <router-link to="/sign-up" class="btn btn-lg btn-light-primary fw-bold"
-          >Cancel</router-link
+        <router-link to="/sign-in" class="btn btn-lg btn-light-primary fw-bold"
+          >ยกเลิก</router-link
         >
       </div>
       <!--end::Actions-->

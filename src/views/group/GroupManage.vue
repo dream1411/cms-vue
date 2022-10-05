@@ -194,7 +194,6 @@ export default {
       const response = await axios.get(
         process.env.VUE_APP_API_URL + "/getGroup"
       );
-      console.log(response.data.data);
       if (response.data.data.length > 0) {
         for (let loopData of response.data.data) {
           if (loopData.id == this.urldata) {
@@ -229,7 +228,6 @@ export default {
           headers: { token: localStorage.getItem("id_token") },
         })
         .then((res) => {
-          console.log(res.data);
           // this.$store.dispatch(Actions.CLEARCACHE);
           this.$router.go(-1);
         })

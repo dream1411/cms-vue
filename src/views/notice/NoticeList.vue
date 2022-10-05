@@ -82,7 +82,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="deleteFewCustomers()"
+            @click="deleteFewTable()"
           >
             ลบสมาชิก
           </button>
@@ -192,7 +192,7 @@
                 >
               </li>
               <li>
-                <a @click="deleteCustomer(tableData.id)" class="dropdown-item"
+                <a @click="deleteTable(tableData.id)" class="dropdown-item"
                   >ลบ</a
                 >
               </li>
@@ -311,8 +311,7 @@ import arraySort from "array-sort";
 import axios from "axios";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 import { useRouter } from "vue-router";
-import store from "@/store";
-import { Actions } from "@/store/enums/StoreEnums";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 const router = useRouter();
 
 export default defineComponent({
@@ -376,29 +375,59 @@ export default defineComponent({
       /* eslint-disable */
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       selectedIds.value.forEach((item) => {
-        deleteCustomer(item);
+        deleteTable(item);
       });
       selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
-        if (tableData.value[i]["id"] === id) {
-          console.log(id);
-          axios
-            .delete(process.env.VUE_APP_API_URL + "/deleteUser?id=" + id, {
-              headers: { token: localStorage.getItem("id_token") },
-            })
+         if (tableData.value[i]["id"] === id) {
+             Swal.fire({
+            title: "คุณต้องการลบข้อมูลนี้ใช่ไหม?",
+            text: "หากคุณลบข้อมูลนี้ไปแล้วไม่สามารถกู้คืนกลับมาได้!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่",
+            cancelButtonText: "ยกเลิก",
+          }).then((result) => {
+            let formData = new FormData();
+            formData.append("id", id);
+            formData.append("name", "notifications");
+            if (result.isConfirmed) {
+              axios
+                .post(
+                  process.env.VUE_APP_API_URL + "/deletePost",
+                  formData,
+                  {
+                    headers: { token: localStorage.getItem("id_token") },
+                  }
+                )
             .then((res) => {
-              tableData.value.splice(i, 1);
-              store.dispatch(Actions.CLEARCACHE);
-              console.log(res);
+               Swal.fire({
+                    title: "ลบรายการสำเร็จ",
+                    text: "รายการข้อมูลของคุณถูกลบเรียบร้อยแล้ว",
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "ตกลง!",
+                    customClass: {
+                      confirmButton: "btn fw-semobold btn-light-primary",
+                    },
+                  }).then(function () {
+                    tableData.value.splice(i, 1);
+                  });
             })
             .catch((error) => {
               console.log(error);
             });
+             
+            }
+          });
+        
         }
       }
     };
@@ -511,11 +540,11 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
       pageChange,
@@ -558,9 +587,7 @@ export default defineComponent({
       var startDate = new Date(date);
       var endDate = new Date();
       let difference = endDate.getTime() - startDate.getTime();
-      console.log(difference);
       // let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-      // console.log(TotalDays + " วัน");
       let time = Math.abs(difference);
       // Define humanTime and units
       var humanTime, units;

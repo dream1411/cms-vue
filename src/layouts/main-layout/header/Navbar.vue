@@ -6,9 +6,7 @@
       <KTSearch />
     </div>
     <!--end::Search-->
-    <!--begin::Activities-->
-    <div class="app-navbar-item ms-1 ms-lg-3">
-      <!--begin::Drawer toggle-->
+    <!-- <div class="app-navbar-item ms-1 ms-lg-3">
       <div
         class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px"
         id="kt_activities_toggle"
@@ -17,12 +15,8 @@
           <inline-svg src="media/icons/duotune/general/gen032.svg" />
         </span>
       </div>
-      <!--end::Drawer toggle-->
     </div>
-    <!--end::Activities-->
-    <!--begin::Notifications-->
     <div class="app-navbar-item ms-1 ms-lg-3">
-      <!--begin::Menu- wrapper-->
       <div
         class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px"
         data-kt-menu-trigger="click"
@@ -34,12 +28,10 @@
         </span>
       </div>
       <KTNotificationMenu />
-      <!--end::Menu wrapper-->
-    </div>
+    </div> -->
     <!--end::Notifications-->
     <!--begin::Chat-->
-    <div class="app-navbar-item ms-1 ms-lg-3">
-      <!--begin::Menu wrapper-->
+    <!-- <div class="app-navbar-item ms-1 ms-lg-3">
       <div
         class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px position-relative"
         id="kt_drawer_chat_toggle"
@@ -51,12 +43,8 @@
           class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink"
         ></span>
       </div>
-      <!--end::Menu wrapper-->
     </div>
-    <!--end::Chat-->
-    <!--begin::Quick links-->
     <div class="app-navbar-item ms-1 ms-lg-3">
-      <!--begin::Menu wrapper-->
       <div
         class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px"
         data-kt-menu-trigger="click"
@@ -68,12 +56,8 @@
         </span>
       </div>
       <KTQuickLinksMenu />
-      <!--end::Menu wrapper-->
-    </div>
-    <!--end::Quick links-->
-    <!--begin::Theme mode-->
+    </div> -->
     <div class="app-navbar-item ms-1 ms-lg-3">
-      <!--begin::Menu toggle-->
       <a
         href="#"
         class="btn btn-icon btn-active-light-primary btn-custom w-30px h-30px w-md-40px h-md-40px"
@@ -91,13 +75,9 @@
           <inline-svg src="media/icons/duotune/general/gen061.svg" />
         </span>
       </a>
-      <!--begin::Menu toggle-->
       <KTThemeModeSwitcher />
     </div>
-    <!--end::Theme mode-->
-    <!--begin::User menu-->
     <div class="app-navbar-item ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
-      <!--begin::Menu wrapper-->
       <div
         class="cursor-pointer symbol symbol-35px symbol-md-40px"
         data-kt-menu-trigger="click"
@@ -114,10 +94,7 @@
         />
       </div>
       <KTUserMenu />
-      <!--end::Menu wrapper-->
     </div>
-    <!--end::User menu-->
-    <!--begin::Header menu toggle-->
     <div class="app-navbar-item d-lg-none ms-2 me-n3" title="Show header menu">
       <div
         class="btn btn-icon btn-active-color-primary w-35px h-35px"
@@ -128,9 +105,7 @@
         </span>
       </div>
     </div>
-    <!--end::Header menu toggle-->
   </div>
-  <!--end::Navbar-->
 </template>
 
 <script>
@@ -147,8 +122,8 @@ export default defineComponent({
   name: "header-navbar",
   components: {
     KTSearch,
-    KTNotificationMenu,
-    KTQuickLinksMenu,
+    // KTNotificationMenu,
+    // KTQuickLinksMenu,
     KTUserMenu,
     KTThemeModeSwitcher,
   },

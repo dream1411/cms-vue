@@ -11,32 +11,32 @@
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
-        <h1 class="text-dark mb-3">เข้าสู่ระบบ</h1>
+        <h1 class="text-dark mb-3">เข้าสู่ระบบการจัดการ</h1>
         <!--end::Title-->
 
         <!--begin::Link-->
-        <div class="text-gray-400 fw-semobold fs-4">
+        <!-- <div class="text-gray-400 fw-semobold fs-4">
           New Here?
 
           <router-link to="/sign-up" class="link-primary fw-bold">
             Create an Account
           </router-link>
-        </div>
+        </div> -->
         <!--end::Link-->
       </div>
       <!--begin::Heading-->
 
-      <div class="mb-10 bg-light-info p-8 rounded">
+      <!-- <div class="mb-10 bg-light-info p-8 rounded">
         <div class="text-info">
-          Use account <strong>zealtech</strong> and password
-          <strong>zeal1tech</strong> to continue.
+          ใช้ account <strong>zealtech</strong> and password
+          <strong>zeal1tech</strong> to เข้าสู่ระบบ.
         </div>
-      </div>
+      </div> -->
 
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-dark">Username</label>
+        <label class="form-label fs-6 fw-bold text-dark">บัญขีผู้ใช้งาน</label>
         <!--end::Label-->
 
         <!--begin::Input-->
@@ -61,12 +61,12 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-dark fs-6 mb-0">Password</label>
+          <label class="form-label fw-bold text-dark fs-6 mb-0">รหัสผ่าน</label>
           <!--end::Label-->
 
           <!--begin::Link-->
           <router-link to="/password-reset" class="link-primary fs-6 fw-bold">
-            Forgot Password ?
+            ลืมรหัสผ่าน ?
           </router-link>
           <!--end::Link-->
         </div>
@@ -89,9 +89,7 @@
       </div>
       <!--end::Input group-->
 
-      <!--begin::Actions-->
       <div class="text-center">
-        <!--begin::Submit button-->
         <button
           tabindex="3"
           type="submit"
@@ -99,22 +97,16 @@
           id="kt_sign_in_submit"
           class="btn btn-lg btn-primary w-100 mb-5"
         >
-          <span class="indicator-label"> Continue </span>
+          <span class="indicator-label"> เข้าสู่ระบบ </span>
 
           <span class="indicator-progress">
-            Please wait...
+            รอสักครู่...
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
           </span>
         </button>
-        <!--end::Submit button-->
-
-        <!--begin::Separator-->
-        <div class="text-center text-muted text-uppercase fw-bold mb-5">or</div>
-        <!--end::Separator-->
-
-        <!--begin::Google link-->
+        <!-- <div class="text-center text-muted text-uppercase fw-bold mb-5">or</div>
         <a
           href="#"
           class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
@@ -126,9 +118,6 @@
           />
           Continue with Google
         </a>
-        <!--end::Google link-->
-
-        <!--begin::Google link-->
         <a
           href="#"
           class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5"
@@ -140,9 +129,6 @@
           />
           Continue with Facebook
         </a>
-        <!--end::Google link-->
-
-        <!--begin::Google link-->
         <a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100">
           <img
             alt="Logo"
@@ -150,14 +136,10 @@
             class="h-20px me-3"
           />
           Continue with Apple
-        </a>
-        <!--end::Google link-->
+        </a> -->
       </div>
-      <!--end::Actions-->
     </Form>
-    <!--end::Form-->
   </div>
-  <!--end::Wrapper-->
 </template>
 
 <script lang="ts">

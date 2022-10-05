@@ -192,12 +192,39 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/complaint/manage/:id",
+        name: "complaint-manage",
+        component: () => import("@/views/complaint/ComplaintManage.vue"),
+        meta: {
+          pageTitle: "ตรวจสอบขอความช่วยเหลือ แจ้งเหตุ",
+          breadcrumbs: ["ตรวจสอบขอความช่วยเหลือ แจ้งเหตุ"],
+        },
+      },
+      {
         path: "/notice",
         name: "notice",
         component: () => import("@/views/notice/NoticeList.vue"),
         meta: {
           pageTitle: "แจ้งเตือน แจ้งเหตุ",
           breadcrumbs: ["แจ้งเตือน แจ้งเหตุ"],
+        },
+      },
+      {
+        path: "/notice/create",
+        name: "notice-create",
+        component: () => import("@/views/notice/NoticeManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มแจ้งเตือน แจ้งเหตุ",
+          breadcrumbs: ["เพิ่มแจ้งเตือน แจ้งเหตุ"],
+        },
+      },
+      {
+        path: "/notice/manage/:id",
+        name: "notice-manage",
+        component: () => import("@/views/notice/NoticeManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขแจ้งเตือน แจ้งเหตุ",
+          breadcrumbs: ["แก้ไขแจ้งเตือน แจ้งเหตุ"],
         },
       },
       {
@@ -210,12 +237,48 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/event/manage/:id",
+        name: "event-manage",
+        component: () => import("@/views/event/EventManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขปฏิทินกิจกรรม",
+          breadcrumbs: ["แก้ไขปฏิทินกิจกรรม"],
+        },
+      },
+      {
+        path: "/event/create",
+        name: "event-create",
+        component: () => import("@/views/event/EventManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มปฏิทินกิจกรรม",
+          breadcrumbs: ["เพิ่มปฏิทินกิจกรรม"],
+        },
+      },
+      {
         path: "/service",
         name: "service",
         component: () => import("@/views/service/ServiceList.vue"),
         meta: {
           pageTitle: "จุดบริการ",
           breadcrumbs: ["จุดบริการ"],
+        },
+      },
+      {
+        path: "/service/manage/:id",
+        name: "service-manage",
+        component: () => import("@/views/service/ServiceManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขจุดบริการ",
+          breadcrumbs: ["แก้ไขจุดบริการ"],
+        },
+      },
+      {
+        path: "/service/create",
+        name: "service-create",
+        component: () => import("@/views/service/ServiceManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มจุดบริการ",
+          breadcrumbs: ["เพิ่มจุดบริการ"],
         },
       },
       {
@@ -228,9 +291,45 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/knowledge/create",
+        name: "knowledge-create",
+        component: () => import("@/views/knowledge/KnowledgeManage.vue"),
+        meta: {
+          pageTitle: "เพิ่มคลังเนื้อหา",
+          breadcrumbs: ["เพิ่มคลังเนื้อหา"],
+        },
+      },
+      {
+        path: "/knowledge/manage/:id",
+        name: "knowledge-manage",
+        component: () => import("@/views/knowledge/KnowledgeManage.vue"),
+        meta: {
+          pageTitle: "แก้ไขคลังเนื้อหา",
+          breadcrumbs: ["แก้ไขคลังเนื้อหา"],
+        },
+      },
+      {
         path: "/contact",
         name: "contact",
         component: () => import("@/views/contact/ContactList.vue"),
+        meta: {
+          pageTitle: "ข้อมูลติดต่อเรา",
+          breadcrumbs: ["ข้อมูลติดต่อเรา"],
+        },
+      },
+      {
+        path: "/contact/create",
+        name: "contact-create",
+        component: () => import("@/views/contact/ContactManage.vue"),
+        meta: {
+          pageTitle: "ข้อมูลติดต่อเรา",
+          breadcrumbs: ["ข้อมูลติดต่อเรา"],
+        },
+      },
+      {
+        path: "/contact/manage/:id",
+        name: "contact-manage",
+        component: () => import("@/views/contact/ContactManage.vue"),
         meta: {
           pageTitle: "ข้อมูลติดต่อเรา",
           breadcrumbs: ["ข้อมูลติดต่อเรา"],

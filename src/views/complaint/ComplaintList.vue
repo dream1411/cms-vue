@@ -70,7 +70,7 @@
         </div>
         <!--end::Toolbar-->
         <!--begin::Group actions-->
-        <div
+        <!-- <div
           v-else
           class="d-flex justify-content-end align-items-center"
           data-kt-customer-table-toolbar="selected"
@@ -82,14 +82,14 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="deleteFewCustomers()"
+            @click="deleteFewTable()"
           >
             ลบสมาชิก
           </button>
-        </div>
+        </div> -->
         <!--end::Group actions-->
         <!--begin::Group actions-->
-        <div
+        <!-- <div
           class="d-flex justify-content-end align-items-center d-none"
           data-kt-customer-table-toolbar="selected"
         >
@@ -107,7 +107,7 @@
           >
             ลบสมาชิก
           </button>
-        </div>
+        </div> -->
         <!--end::Group actions-->
       </div>
       <!--end::Card toolbar-->
@@ -184,7 +184,11 @@
           </div>
         </template>
         <template v-slot:actions="{ row: tableData }">
-          <div class="dropdown">
+           <router-link
+                  :to="'/complaint/manage/' + tableData.id"
+                 class="btn btn-sm btn-primary"
+                  >ตรวจสอบ</router-link>
+          <!-- <div class="dropdown">
             <button
               class="btn btn-sm btn-secondary dropdown-toggle"
               type="button"
@@ -205,13 +209,8 @@
                   >ตรวจสอบ</router-link
                 >
               </li>
-              <!-- <li>
-                <a @click="deleteCustomer(tableData.id)" class="dropdown-item"
-                  >ลบ</a
-                >
-              </li> -->
             </ul>
-          </div>
+          </div> -->
         </template>
       </Datatable>
     </div>
@@ -383,6 +382,7 @@ export default defineComponent({
         sortEnabled: true,
       },
       {
+        columnWidth:"100",
         columnName: "จัดการ",
         columnLabel: "actions",
         sortEnabled: false,
@@ -400,30 +400,16 @@ export default defineComponent({
       /* eslint-disable */
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       selectedIds.value.forEach((item) => {
-        deleteCustomer(item);
+        deleteTable(item);
       });
       selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
-        if (tableData.value[i]["id"] === id) {
-          console.log(id);
-          axios
-            .delete(process.env.VUE_APP_API_URL + "/deleteUser?id=" + id, {
-              headers: { token: localStorage.getItem("id_token") },
-            })
-            .then((res) => {
-              tableData.value.splice(i, 1);
-              store.dispatch(Actions.CLEARCACHE);
-              console.log(res);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
+       
       }
     };
     const search = ref<string>("");
@@ -541,11 +527,11 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
       pageChange,
