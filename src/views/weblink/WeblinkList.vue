@@ -75,14 +75,14 @@
         >
           <div class="fw-bold me-5">
             <span class="me-2">{{ selectedIds.length }}</span
-            >Selected
+            >รายการ
           </div>
           <button
             type="button"
             class="btn btn-danger"
-            @click="deleteFewCustomers()"
+            @click="deleteFewTable()"
           >
-            Delete Selected
+            ลบรายการ
           </button>
         </div>
         <!--end::Group actions-->
@@ -103,7 +103,7 @@
             class="btn btn-danger"
             data-kt-customer-table-select="delete_selected"
           >
-            ลบป้ายประชาสัมพันธ์
+            ลบรายการ
           </button>
         </div>
         <!--end::Group actions-->
@@ -191,7 +191,7 @@
                 >
               </li>
               <li>
-                <a @click="deleteCustomer(tableData.id)" class="dropdown-item"
+                <a @click="deleteTable(tableData.id)" class="dropdown-item"
                   >ลบ</a
                 >
               </li>
@@ -221,7 +221,7 @@
        
             <div class="menu-item px-3">
                 {{tableData.id}}
-              <a @click="deleteCustomer(tableData.id)" class="menu-link px-3"
+              <a @click="deleteTable(tableData.id)" class="menu-link px-3"
                 >Delete</a
               >
             </div>
@@ -324,8 +324,8 @@ import arraySort from "array-sort";
 import axios from "axios";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 import { useRouter } from "vue-router";
-import store from "@/store";
-import { Actions } from "@/store/enums/StoreEnums";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import router from "@/router";
 export default defineComponent({
   name: "customers-listing",
   components: {
@@ -380,34 +380,52 @@ export default defineComponent({
       /* eslint-disable */
     });
 
-    const deleteFewCustomers = () => {
+    const deleteFewTable = () => {
       selectedIds.value.forEach((item) => {
-        deleteCustomer(item);
+        deleteTable(item);
       });
       selectedIds.value.length = 0;
     };
 
-    const deleteCustomer = (id) => {
+    const deleteTable = (id) => {
       for (let i = 0; i < tableData.value.length; i++) {
         if (tableData.value[i]["id"] === id) {
-          axios
-            .delete(
-              process.env.VUE_APP_API_URL +
-                "/deletePost?id=" +
-                id +
-                "&name=banner",
-              {
-                headers: { token: localStorage.getItem("id_token") },
-              }
-            )
-            .then((res) => {
-              tableData.value.splice(i, 1);
-              store.dispatch(Actions.CLEARCACHE);
-              console.log(res);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          Swal.fire({
+            title: "คุณต้องการลบข้อมูลนี้ใช่ไหม?",
+            text: "หากคุณลบข้อมูลนี้ไปแล้วไม่สามารถกู้คืนกลับมาได้!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่",
+            cancelButtonText: "ยกเลิก",
+          }).then((result) => {
+            if (result.isConfirmed) {
+               let formData = new FormData();
+      formData.append("id", id);
+              axios
+                .post(process.env.VUE_APP_API_URL + "/deleteWebLink",formData, {
+                  headers: { token: localStorage.getItem("id_token") },
+                })
+                .then((res) => {
+                  Swal.fire({
+                    title: "ลบรายการสำเร็จ",
+                    text: "รายการข้อมูลของคุณถูกลบเรียบร้อยแล้ว",
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "ตกลง!",
+                    customClass: {
+                      confirmButton: "btn fw-semobold btn-light-primary",
+                    },
+                  }).then(function () {
+                    tableData.value.splice(i, 1);
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          });
         }
       }
     };
@@ -510,11 +528,11 @@ export default defineComponent({
     return {
       tableData,
       tableHeader,
-      deleteCustomer,
+      deleteTable,
       search,
       searchItems,
       selectedIds,
-      deleteFewCustomers,
+      deleteFewTable,
       sort,
       onItemSelect,
       formData,
@@ -541,14 +559,12 @@ export default defineComponent({
         second: "2-digit",
       });
     },
- 
+
     getTime(date) {
       var startDate = new Date(date);
       var endDate = new Date();
       let difference = endDate.getTime() - startDate.getTime();
-      console.log(difference);
       // let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-      // console.log(TotalDays + " วัน");
       let time = Math.abs(difference);
       // Define humanTime and units
       var humanTime, units;

@@ -371,9 +371,11 @@ const categoryList = ref([]);
 const searchText = ref("");
 const category = ref([]);
 const deletePictures = [];
+const clear = ref(false);
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import { Dashboard } from "@uppy/vue";
+import ThumbnailGenerator from "@uppy/thumbnail-generator";
 import Uppy from "@uppy/core";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 import * as Yup from "yup";
@@ -383,6 +385,11 @@ const uppy = new Uppy({
   restrictions: {
     allowedFileTypes: ["image/*"],
   },
+});
+uppy.on("file-removed", (file) => {
+  if (file.data == "null" && clear.value == false) {
+    deletePictures.push(file.name);
+  }
 });
 export default {
   components: {
@@ -410,11 +417,19 @@ export default {
       title: Yup.string().required("กรุณาระบุ หัวข้อ"),
       // password: Yup.string().min(4).required().label("Password"),
     });
+
     onMounted(() => {
-      console.log(uppy.getFiles());
-      if (uppy.getFiles().length > 0) {
-        for (const loopclear of uppy.getFiles()) {
+      let dataList = uppy.getFiles()
+      if (dataList.length > 0) {
+        for (let index = 0; index < dataList.length; index++) {
+          const loopclear = dataList[index];
+          clear.value = true;
           uppy.removeFile(loopclear.id);
+          if (index == dataList.length - 1) {
+            setTimeout(() => {
+              clear.value = false;
+            }, 1000);
+          }
         }
       }
       axios
@@ -422,7 +437,6 @@ export default {
           headers: { token: localStorage.getItem("id_token") },
         })
         .then(({ data }) => {
-          console.log(data);
           let categoryLiist = [];
           if (data.data.length > 0) {
             for (const loopData of data.data) {
@@ -464,35 +478,19 @@ export default {
             } else {
               news.value.pin = false;
             }
-            if (news.value.picturesPath.length > 0) {
-              for (let loopPicturesPath of news.value.picturesPath) {
-                let picturesPath =
-                  process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath;
-                let imageFileAsBase64String = getBase64FromUrl(picturesPath);
-                // picturesPath = window.URL.createObjectURL(new Blob([picturesPath]))
-                console.log(picturesPath);
-                fetch(`data:image/jpeg;base64,${imageFileAsBase64String}`)
-                  .then((response) => response.blob())
-                  .then((blob) => {
-                    uppy.addFile({
-                      name: "loopPicturesPath",
-                      type: "image/jpeg",
-                      data: blob,
-                      source: "edit",
-                    });
+              if (news.value.picturesPath.length > 0) {
+                for (let loopPicturesPath of news.value.picturesPath) {
+                  uppy.addFile({
+                    name: loopPicturesPath, // image name
+                    type: "image/jpeg",
+                    data: "null",
+                    source:
+                      process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath,
+                    remote: true,
                   });
-                // uppy.addFile({
-                //   name: loopPicturesPath, // image name
-                //   type: "image/jpeg",
-                //   data: "null",
-                //   source: process.env.VUE_APP_API_URL_IMAGE + loopPicturesPath,
-                //   remote: true,
-                // });
-                //  uppy.setFileState(loopPicturesPath, { picturesPath });
+                }
               }
 
-              console.log(news.value);
-            }
             let categoryLiist = [];
             if (categoryList.value.length > 0) {
               for (const loopData of categoryList.value) {
@@ -526,7 +524,7 @@ export default {
           buttonUrl: "",
           youtube: "",
           category: "",
-          groupId: "63293ef74cedfd0001b8af25",
+          groupId: localStorage.getItem("groupId"),
           pushnotification: false,
           enable: false,
           pin: false,
@@ -534,33 +532,11 @@ export default {
       }
     });
 
-    uppy.on("file-removed", (file) => {
-      if (file.data == "null") {
-        deletePictures.push(file.name);
-      }
-      console.log(deletePictures);
-    });
     const onNodeExpanded = (node, state) => {
       console.log("state: ", state);
       console.log("node: ", node);
     };
-    const getBase64FromUrl = async (url) => {
-      const data = await fetch(url, {
-        mode: "cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const blob = await data.blob();
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          const base64data = reader.result;
-          resolve(base64data);
-        };
-      });
-    };
+
     const onUpdate = (nodes) => {
       //  category.value= []
       if (nodes.length > 0) {
@@ -591,19 +567,11 @@ export default {
           }
         }
       }
-      // this.news.category = category.value;
-      // console.log(category.value);
     };
+
     const onNodeClick = (node) => {
       node.checked = node[0].checked;
     };
-    uppy.on("thumbnail:generated", (file, preview) => {
-      console.log(preview);
-      const img = document.createElement("img");
-      img.src = preview;
-      img.width = 100;
-      document.body.appendChild(img);
-    });
     return {
       categoryList,
       searchText,
@@ -617,13 +585,6 @@ export default {
     };
   },
   methods: {
-    handleFilePondInit: function () {
-      console.log("FilePond has initialized");
-      // FilePond instance methods are available on `this.$refs.pond`
-    },
-    handleClose() {
-      this.open = false;
-    },
     onFileChange(event) {
       this.file = event.target.files[0];
       news.value.thumbnailsPath = URL.createObjectURL(this.file);
@@ -643,7 +604,6 @@ export default {
           }
         }
         news.value.category = list;
-        console.log(this.profile.permissionMenu);
       });
     },
     previewImage() {
@@ -710,9 +670,11 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          deletePictures.values = [];
           this.$router.go(-1);
         })
         .catch((error) => {
+          deletePictures.values = [];
           console.log(error);
         });
       // if (news.value.pin == true) {

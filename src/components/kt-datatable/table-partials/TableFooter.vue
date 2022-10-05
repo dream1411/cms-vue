@@ -80,8 +80,6 @@ export default defineComponent({
         inputItemsPerPage.value = value;
         emit("update:itemsPerPage", value);
         emit("perpage-change", value);
-        console.log(value);
-        
       },
     });
 

@@ -92,12 +92,10 @@ export default class AuthModule extends VuexModule implements UserAuthInfo {
 
   @Action
   [Actions.LOGIN](credentials) {
-    console.log(credentials);
     /* eslint-disable */
     return ApiService.post("loginAdmin", credentials ? qs.stringify({ username: credentials.username, password: credentials.password })
       : credentials)
       .then(({ data }) => {
-        console.log(data.data.profile);
         this.context.commit(Mutations.SET_AUTH, data.data.profile);
         this.context.commit(Mutations.SET_USER, data.data.profile);
       })

@@ -138,7 +138,8 @@ import jQuery from "jquery";
 const $ = jQuery;
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form } from "vee-validate";
-import { Actions } from "@/store/enums/StoreEnums";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import router from "@/router";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 export default {
   name: "UsersManage",
@@ -169,7 +170,6 @@ export default {
           headers: { token: localStorage.getItem("id_token") },
         }
       );
-      console.log(response.data.data);
       this.weblink = response.data.data;
       if (this.weblink.image != null) {
         if (this.weblink.image.indexOf("https") > -1) {
@@ -200,9 +200,18 @@ export default {
             headers: { token: localStorage.getItem("id_token") },
           })
           .then((res) => {
-            console.log(res.data);
-            // this.$store.dispatch(Actions.CLEARCACHE);
-            this.$router.go(-1);
+                Swal.fire({
+              title: "บันทึกรายการสำเร็จ",
+              text: "รายการข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
+              icon: "success",
+              buttonsStyling: false,
+              confirmButtonText: "ตกลง!",
+              customClass: {
+                confirmButton: "btn fw-semobold btn-light-primary",
+              },
+            }).then(function () {
+              router.go(-1);
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -213,9 +222,18 @@ export default {
             headers: { token: localStorage.getItem("id_token") },
           })
           .then((res) => {
-            console.log(res.data);
-            // this.$store.dispatch(Actions.CLEARCACHE);
-            this.$router.go(-1);
+                Swal.fire({
+              title: "บันทึกรายการสำเร็จ",
+              text: "รายการข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
+              icon: "success",
+              buttonsStyling: false,
+              confirmButtonText: "ตกลง!",
+              customClass: {
+                confirmButton: "btn fw-semobold btn-light-primary",
+              },
+            }).then(function () {
+              router.go(-1);
+            });
           })
           .catch((error) => {
             console.log(error);

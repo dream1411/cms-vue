@@ -74,11 +74,9 @@ export default defineComponent({
      const nowPage = ref<number>(1);
     const currentPage = ref(props.currentPage);
     const itemsInTable = ref<number>(props.itemsPerPage);
-    console.log(currentPage);
     watch(() => itemsInTable.value,
       (val) => {
         currentPage.value = 1;
-        console.log(val);
         emit("on-items-per-page-change", val);
          emit("page-change", 1);
       }
@@ -90,11 +88,9 @@ export default defineComponent({
     );
     const perPageChange = (perpage: number) => {
       emit("perpage-change", perpage);
-      console.log(perpage);
     };
     const pageChange = (page: number) => {
       currentPage.value = page;
-      console.log(page);
       emit("page-change", page);
     };
 
@@ -111,7 +107,6 @@ export default defineComponent({
     });
 
     const totalItems = computed(() => {
-      console.log(props.data);
       if (props.data) {
         if (props.data.length <= itemsInTable.value) {
           return props.data["totalElements"];
